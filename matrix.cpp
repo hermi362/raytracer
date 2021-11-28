@@ -125,6 +125,12 @@ std::string Matrix::toString() const {
   return out;
 }
 
+// Multiplication of two matrices. 
+// Note that the return is by-value, not by-reference (Matrix &)
+// According to the documentation, the C++ compiler will attempt to use 
+// move semantics (i.e. the move assignment operator) to 'move' the
+// return value when used in an expression. So even though it might look as though the return
+// value is being copied out, that is not necessarily the case.
 Matrix operator*(const Matrix& lhs, const Matrix& rhs) {
   assert(lhs.dimension() == rhs.dimension());
   const int N = lhs.dimension();

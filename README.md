@@ -1,5 +1,7 @@
 # raytracer
-A C++ implementation of the simple raytracer from Jamis Buck's book "The Raytracer Challenge"
+A C++ implementation of the simple raytracer from Jamis Buck's book "The Raytracer Challenge".
+
+I am using this project to re-familiarize myself with C++ after being away for it for about a decade.
 
 ## Prerequisites
 - g++

@@ -30,7 +30,7 @@ class Matrix {
     ~Matrix()=default;
 
     int dimension() const { return N; } // get matrix size (N)
-    float at(int row, int col) const;  // get single matrix value at (row,col)
+    float at(int row, int col) const;  // get single matrix value at (row,col), first element is at (0,0)
 
     bool operator==(const Matrix& rhs) const;  // test for equality.
     bool operator!=(Matrix& rhs) const { return !operator==(rhs); }

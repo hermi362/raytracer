@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <initializer_list>
+#include <memory>
 
 #include "tuple.h"
 
@@ -12,8 +13,8 @@
 class Matrix {
   private:
     int N;          // matrix size (N*N)
-    float* mData;   // matrix values as array
-    float at(int i) const { return mData[i]; } // get matrix value at array index i
+    std::unique_ptr<float[]> mPtr;  // store matrix data as 1-dimensional array in a managed pointer
+    float at(int i) const { return mPtr[i]; } // get matrix value at array index i
   public:
     Matrix(int dim);  // create zero-filled matrix of given dim
     Matrix(int dim, std::initializer_list<float> values); // initialize from list of floats
@@ -25,7 +26,8 @@ class Matrix {
     Matrix(Matrix&& m) noexcept; // move constructor
     Matrix& operator=(Matrix&& m) noexcept; // move assignment
     
-    ~Matrix();
+    // default destructor is fine, managed pointer's deleter will deallocate its matrix data
+    ~Matrix()=default;
 
     int dimension() const { return N; } // get matrix size (N)
     float at(int row, int col) const;  // get single matrix value at (row,col)

@@ -2,23 +2,24 @@
 #include <utility>
 #include "matrix.h"
 #include "util.h"
+#include <memory>
 
 
 
 Matrix::Matrix(int dim) {
   N = dim;
-  mData = new float[N*N];
-  for (int i=0 ; i<N*N ; ++i) {mData[i] = 0;}
+  mPtr = std::unique_ptr<float[]>(new float[N*N]);
+  for (int i=0 ; i<N*N ; ++i) {mPtr[i] = 0;}
 }
 
 Matrix::Matrix(int dim, std::initializer_list<float> values) {
   N = dim;
-  mData = new float[N*N];
+  mPtr = std::unique_ptr<float[]>(new float[N*N]);
 
   assert(values.size() >= N*N);
   auto iter = values.begin();
   for (int i=0 ; i<N*N ; ++i) {
-    mData[i] = *iter;
+    mPtr[i] = *iter;
     ++iter;
   }
 }
@@ -27,9 +28,9 @@ Matrix::Matrix(int dim, std::initializer_list<float> values) {
 Matrix::Matrix(const Matrix& m) {
   // printf("copy constructor\n");
   N = m.dimension();
-  mData = new float[N*N];
+  mPtr = std::unique_ptr<float[]>(new float[N*N]);
   for (int i=0 ; i<N*N ; ++i) {
-    mData[i] = m.mData[i];
+    mPtr[i] = m.mPtr[i];
   }
 }
 
@@ -37,11 +38,11 @@ Matrix::Matrix(const Matrix& m) {
 Matrix& Matrix::operator=(const Matrix& rhs) {
   if (this != &rhs) {  // beware of self-assignment, mat = mat
     // printf("copy assignment\n");
-    delete[] mData;
+    delete[] mPtr.release();
     N = rhs.N;
-    mData = new float[N*N];
+    mPtr =  std::unique_ptr<float[]>(new float[N*N]);
     for (int i=0 ; i<N*N ; ++i) {
-      mData[i] = rhs.mData[i];
+      mPtr[i] = rhs.mPtr[i];
     }
   }
   return *this;
@@ -50,7 +51,7 @@ Matrix& Matrix::operator=(const Matrix& rhs) {
 // move constructor
 Matrix::Matrix(Matrix&& m) noexcept
   : N(std::exchange(m.N, 0))
-  , mData(std::exchange(m.mData, nullptr)) 
+  , mPtr(m.mPtr.release())
 {
   // NOTE: std::exchange(obj, val) assigns val to obj
   // and returns the original value of obj. A useful function
@@ -63,24 +64,17 @@ Matrix& Matrix::operator=(Matrix&& m) noexcept {
   if (this != &m) {   // ignore assigning to yourself
     printf("move assignment\n");
 
-    // free up any existing matrix data
-    delete[] mData;
-
     // move data over to 'this'
     N     = std::exchange(m.N, 0);
-    mData = std::exchange(m.mData, nullptr);
+    mPtr.reset(m.mPtr.release());
   }
   return *this;
 }
 
-Matrix::~Matrix() {
-  if (mData != nullptr)
-    delete[] mData;
-}
-
 float Matrix::at(int row, int col) const {
   // do not range-check (trade risk for maximum speed)
-  return mData[N*row + col];
+  // return mData[N*row + col];
+  return mPtr[N*row + col];
 }
 
 bool Matrix::operator==(const Matrix& rhs) const {
@@ -103,7 +97,7 @@ void Matrix::setValue(int row, int col, float value) {
   if (row >= N  ||  col >= N  ||  row < 0  ||  col < 0)   // bounds check
     return;
   // printf("Writing: [%d, %d] <-- %f\n", row, col, value);
-  mData[N*row + col] = value;
+  mPtr[N*row + col] = value;
 }
 
 std::string Matrix::toString() const {
@@ -115,7 +109,7 @@ std::string Matrix::toString() const {
   out += buffer;
   for (int row=0 ; row<N ; ++row) {
     for (int col=0 ; col<N ; ++col) {
-      std::snprintf(buffer, NB, "%.4f  ", mData[N*row + col]);
+      std::snprintf(buffer, NB, "%.4f  ", mPtr[N*row + col]);
       out += buffer;
     }
     std::snprintf(buffer, NB, "\n");
@@ -171,11 +165,11 @@ Matrix Matrix::transpose() const {
 }
 
 float Matrix::determinant() const {
-  if (N == 1) return mData[0];
+  if (N == 1) return at(0);
   if (N == 2) {
     // |a b|  -->  (ad - bd)
     // |c d|
-    return mData[0]*mData[3] - mData[1]*mData[2];
+    return at(0)*at(3) - at(1)*at(2);
   } else {
     // sum (element*cofactor) along top row
     const int row = 0;
@@ -240,5 +234,5 @@ bool Matrix::isInvertible() const {
 
 // return inverse as a new Matrix
 Matrix Matrix::inverse() const {
-
+  return Matrix(1);
 }

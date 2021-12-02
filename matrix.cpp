@@ -26,7 +26,6 @@ Matrix::Matrix(int dim, std::initializer_list<float> values) {
 
 // copy constructor
 Matrix::Matrix(const Matrix& m) {
-  // printf("copy constructor\n");
   N = m.dimension();
   mPtr = std::unique_ptr<float[]>(new float[N*N]);
   for (int i=0 ; i<N*N ; ++i) {
@@ -37,10 +36,8 @@ Matrix::Matrix(const Matrix& m) {
 // copy assignment
 Matrix& Matrix::operator=(const Matrix& rhs) {
   if (this != &rhs) {  // beware of self-assignment, mat = mat
-    // printf("copy assignment\n");
-    delete[] mPtr.release();
     N = rhs.N;
-    mPtr =  std::unique_ptr<float[]>(new float[N*N]);
+    mPtr = std::unique_ptr<float[]>(new float[N*N]);  // this destroys old content of unique_ptr
     for (int i=0 ; i<N*N ; ++i) {
       mPtr[i] = rhs.mPtr[i];
     }
@@ -49,14 +46,15 @@ Matrix& Matrix::operator=(const Matrix& rhs) {
 }
 
 // move constructor
-Matrix::Matrix(Matrix&& m) noexcept
-  : N(std::exchange(m.N, 0))
-  , mPtr(m.mPtr.release())
-{
+Matrix::Matrix(Matrix&& m) noexcept {
   // NOTE: std::exchange(obj, val) assigns val to obj
   // and returns the original value of obj. A useful function
-  // for move constructor & move assignment
+  // for move constructor & move assignment, where the source object
+  // should be hollowed out.
+
   printf("move constructor\n");
+  N = std::exchange(m.N, 0);
+  mPtr = std::move(m.mPtr);
 }
 
 // move assignment
@@ -65,15 +63,15 @@ Matrix& Matrix::operator=(Matrix&& m) noexcept {
     printf("move assignment\n");
 
     // move data over to 'this'
-    N     = std::exchange(m.N, 0);
-    mPtr.reset(m.mPtr.release());
+    N = std::exchange(m.N, 0);
+    mPtr = std::move(m.mPtr);
   }
   return *this;
 }
 
+// return value of matrix at given row, col (0-based)
 float Matrix::at(int row, int col) const {
   // do not range-check (trade risk for maximum speed)
-  // return mData[N*row + col];
   return mPtr[N*row + col];
 }
 

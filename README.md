@@ -9,7 +9,7 @@ I am using this project to re-familiarize myself with C++ after being away for i
 
 For the record I developed this in Debian 10 using WSL (Windows Subsystem for Linux).
 
-AFAIK I don't use any features that are newer than C++11.
+AFAIK I don't use any features that are newer than C++14.
 
 ## Build instructions
 Just run `make` in the shell. Execute `raytracer` to start program.

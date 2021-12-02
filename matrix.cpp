@@ -8,13 +8,13 @@
 
 Matrix::Matrix(int dim) {
   N = dim;
-  mPtr = std::unique_ptr<float[]>(new float[N*N]);
+  mPtr = std::make_unique<float[]>(N*N);
   for (int i=0 ; i<N*N ; ++i) {mPtr[i] = 0;}
 }
 
 Matrix::Matrix(int dim, std::initializer_list<float> values) {
   N = dim;
-  mPtr = std::unique_ptr<float[]>(new float[N*N]);
+  mPtr = std::make_unique<float[]>(N*N);
 
   assert(values.size() >= N*N);
   auto iter = values.begin();
@@ -27,7 +27,7 @@ Matrix::Matrix(int dim, std::initializer_list<float> values) {
 // copy constructor
 Matrix::Matrix(const Matrix& m) {
   N = m.dimension();
-  mPtr = std::unique_ptr<float[]>(new float[N*N]);
+  mPtr = std::make_unique<float[]>(N*N);
   for (int i=0 ; i<N*N ; ++i) {
     mPtr[i] = m.mPtr[i];
   }
@@ -37,7 +37,7 @@ Matrix::Matrix(const Matrix& m) {
 Matrix& Matrix::operator=(const Matrix& rhs) {
   if (this != &rhs) {  // beware of self-assignment, mat = mat
     N = rhs.N;
-    mPtr = std::unique_ptr<float[]>(new float[N*N]);  // this destroys old content of unique_ptr
+    mPtr = std::make_unique<float[]>(N*N);  // this destroys old content of unique_ptr
     for (int i=0 ; i<N*N ; ++i) {
       mPtr[i] = rhs.mPtr[i];
     }

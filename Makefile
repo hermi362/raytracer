@@ -16,7 +16,8 @@ canvas.o: canvas.cpp canvas.h color.h
 matrix.o: matrix.cpp matrix.h tuple.h util.h
 	g++ -Wall -c matrix.cpp
 
-util.o: util.h
+util.o: util.cpp util.h
+	g++ -Wall -c util.cpp
 
 clean:
 	rm *.o raytracer

@@ -371,33 +371,33 @@ void runTests() {
     m31 = std::move(m30);
 
     Matrix m32(3, {3,5,0,2,-1,-7,6,-1,5});
-    assert(m32.minor(1,0) == 25);
-    assert(m32.minor(0,0) == -12);
-    assert(m32.minor(1,1) == 15);
-    assert(m32.minor(2,2) == -13);
+    assert(isEqualEnough(m32.minor(1,0), 25));
+    assert(isEqualEnough(m32.minor(0,0), -12));
+    assert(isEqualEnough(m32.minor(1,1), 15));
+    assert(isEqualEnough(m32.minor(2,2), -13));
 
-    assert(m32.cofactor(0,0) == -12);
-    assert(m32.cofactor(1,0) == -25);
+    assert(isEqualEnough(m32.cofactor(0,0), -12));
+    assert(isEqualEnough(m32.cofactor(1,0), -25));
 
     Matrix m33(3, {1,2,6, -5,8,-4, 2,6,4});
-    assert(m33.cofactor(0,0) == 56);
-    assert(m33.cofactor(0,1) == 12);
-    assert(m33.cofactor(0,2) == -46);
-    assert(m33.determinant() == -196);
+    assert(isEqualEnough(m33.cofactor(0,0), 56));
+    assert(isEqualEnough(m33.cofactor(0,1), 12));
+    assert(isEqualEnough(m33.cofactor(0,2), -46));
+    assert(isEqualEnough(m33.determinant(), -196));
 
     Matrix m34(4, {-2,-8,3,5, -3,1,7,3, 1,2,-9,6, -6,7,7,-9});
-    assert(m34.cofactor(0,0) == 690);
-    assert(m34.cofactor(0,1) == 447);
-    assert(m34.cofactor(0,2) == 210);
-    assert(m34.cofactor(0,3) == 51);
-    assert(m34.determinant() == -4071);
+    assert(isEqualEnough(m34.cofactor(0,0), 690));
+    assert(isEqualEnough(m34.cofactor(0,1), 447));
+    assert(isEqualEnough(m34.cofactor(0,2), 210));
+    assert(isEqualEnough(m34.cofactor(0,3), 51));
+    assert(isEqualEnough(m34.determinant(), -4071));
 
     Matrix m35(4, {6,4,4,4, 5,5,7,6, 4,-9,3,-7, 9,1,7,-6});
-    assert(m35.determinant() == -2120);
+    assert(isEqualEnough(m35.determinant(), -2120));
     assert(m35.isInvertible());
 
     Matrix m36(4, {-4,2,-2,-3, 9,6,2,6, 0,-5,1,-5, 0,0,0,0});
-    assert(m36.determinant() == 0);
+    assert(isEqualEnough(m36.determinant(), 0));
     assert(m36.isInvertible() == false);
     
 

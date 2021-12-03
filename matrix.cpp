@@ -230,5 +230,19 @@ bool Matrix::isInvertible() const {
 
 // return inverse as a new Matrix
 Matrix Matrix::inverse() const {
-  return Matrix(1);
+  assert(isInvertible());
+  
+  Matrix ret(N); // create a new matrix of the same size
+  float det = determinant();
+
+  for (int row=0 ; row<N ; ++row) {
+    for (int col=0 ; col<N ; ++col) {
+      float cof = cofactor(row, col);
+
+      // note: col and row are swapped, effectively transposing the output matrix.
+      ret.setValue(col, row, cof/det);
+    }
+  }
+
+  return ret;
 }

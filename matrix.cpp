@@ -79,12 +79,10 @@ bool Matrix::operator==(const Matrix& rhs) const {
   // if matrix sizes don't match return immediately
   if (dimension() != rhs.dimension())
     return false;
-
-  static const float ERR = 0.00001;  // permissible error below which two floating-point values are considered equal
   
   // check every value pair. exit at first mismatch.
   for (int i=0 ; i<N*N ; ++i) {
-    if (std::abs(at(i) - rhs.at(i)) > ERR)
+    if (!isEqualEnough(at(i), rhs.at(i)))
       return false;
   }
 

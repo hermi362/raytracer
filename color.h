@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "util.h"
 
 class Color {
 public:
@@ -19,10 +20,9 @@ public:
   }
 
   bool operator==(const Color& c) {
-    static const float ERR = 0.00001;  // permissible error below which two floating-point values are considered equal
-    return (std::abs(r - c.r) < ERR  &&
-            std::abs(g - c.g) < ERR  &&
-            std::abs(b - c.b) < ERR    );
+    return (isEqualEnough(r, c.r) &&
+            isEqualEnough(g, c.g) &&
+            isEqualEnough(b, c.b) );
   }
   Color operator+(const Color& c) {
     return Color(r+c.r, g+c.g, b+c.b);

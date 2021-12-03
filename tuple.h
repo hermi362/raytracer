@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cassert>
+#include "util.h"
 
 class Tuple {
 public:
@@ -19,11 +20,10 @@ public:
 };
 
 inline bool operator==(const Tuple& lhs, const Tuple& rhs) {
-  static const float ERR = 0.00001;  // permissible error below which two floating-point values are considered equal
-  if (std::abs(lhs.x - rhs.x) < ERR  &&
-      std::abs(lhs.y - rhs.y) < ERR  &&
-      std::abs(lhs.z - rhs.z) < ERR  &&
-      std::abs(lhs.w - rhs.w) < ERR)
+  if (isEqualEnough(lhs.x, rhs.x) && 
+      isEqualEnough(lhs.y, rhs.y) && 
+      isEqualEnough(lhs.z, rhs.z) && 
+      isEqualEnough(lhs.w, rhs.w) )
     return true;
   else
     return false;

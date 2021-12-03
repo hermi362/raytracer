@@ -55,3 +55,5 @@ Tuple operator*(const Matrix& lhs, const Tuple& rhs); // multiplication with tup
 
 static const Matrix id4Matrix(4, {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1});
 
+// return the 4x4 translation matrix for the distances x, y, z
+Matrix getTranslation(float x, float y, float z);

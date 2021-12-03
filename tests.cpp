@@ -422,7 +422,6 @@ void runTests() {
               -0.076923076923076923,  0.1230769230769230768,  0.025641025641025641,  0.0307692307692307692,
                0.358974358974358974,  0.358974358974358974,   0.435897435897435897,  0.923076923076923076,
               -0.692307692307692307, -0.692307692307692307,  -0.76923076923076923,  -1.923076923076923075  }));
-  }
 
   Matrix m42(4, {9,3,0,9, -5,-2,-6,-3, -4,9,6,4, -7,6,6,2});
   assert(m42.inverse() == Matrix(4, {
@@ -442,6 +441,29 @@ void runTests() {
 
   // test trans(inv(A)) == inv(trans(A))
   assert(matA.inverse().transpose() == matA.transpose().inverse());
+  }
+
+  {
+    // translation test
+    Matrix t1 = getTranslation(5, -3, 2);
+    Point p(-3, 4, 5);
+    assert( t1 * p == Point(2, 1, 7) );
+  }
+
+  {
+    // invert translation matrix to get reverse translation
+    Matrix t1 = getTranslation(5, -3, 2);
+    Matrix inv = t1.inverse();
+    Point p(-3, 4, 5);
+    assert( inv * p == Point(-8, 7, 3));
+  }
+
+  {
+    // multiplying a translation by a vector should not change the vector
+    Matrix t1 = getTranslation(5, -3, 2);
+    Vector v(-3, 4, 5);
+    assert(t1 * v == v);
+  }
 
   std::cout << "Tests completed.\n";
 }

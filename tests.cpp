@@ -365,7 +365,6 @@ void runTests() {
                    8 ,9, 30});
     assert(m26.submatrix(3,0) == m28);
     
-    printf("----------------\n");
     Matrix m30(3, {1,2,3,4,5,6,7,8,9}); 
     Matrix m31(std::move(m30));
     m31 = std::move(m30);

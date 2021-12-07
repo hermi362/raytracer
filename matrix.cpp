@@ -52,7 +52,7 @@ Matrix::Matrix(Matrix&& m) noexcept {
   // for move constructor & move assignment, where the source object
   // should be hollowed out.
 
-  printf("move constructor\n");
+  // printf("move constructor\n");
   N = std::exchange(m.N, 0);
   mPtr = std::move(m.mPtr);
 }
@@ -60,7 +60,7 @@ Matrix::Matrix(Matrix&& m) noexcept {
 // move assignment
 Matrix& Matrix::operator=(Matrix&& m) noexcept {
   if (this != &m) {   // ignore assigning to yourself
-    printf("move assignment\n");
+    // printf("move assignment\n");
 
     // move data over to 'this'
     N = std::exchange(m.N, 0);

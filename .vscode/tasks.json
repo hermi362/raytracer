@@ -16,7 +16,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "make"
+			"detail": "build project using GNU make"
 		}
 	]
 }

@@ -5,19 +5,19 @@ raytracer:         main.o tests.o canvas.o matrix.o util.o
 	g++ -o raytracer main.o tests.o canvas.o matrix.o util.o
 
 main.o: main.cpp tuple.h color.h tests.h canvas.h
-	g++ -Wall -c main.cpp
+	g++ -std=c++14 -g -Wall -c main.cpp
 
 tests.o: tests.cpp tuple.h color.h tests.h canvas.h matrix.h util.h
-	g++ -Wall -c tests.cpp
+	g++ -std=c++14 -g -Wall -c tests.cpp
 
 canvas.o: canvas.cpp canvas.h color.h
-	g++ -Wall -c canvas.cpp
+	g++ -std=c++14 -g -Wall -c canvas.cpp
 
 matrix.o: matrix.cpp matrix.h tuple.h util.h
-	g++ -Wall -c matrix.cpp
+	g++ -std=c++14 -g -Wall -c matrix.cpp
 
 util.o: util.cpp util.h
-	g++ -Wall -c util.cpp
+	g++ -std=c++14 -g -Wall -c util.cpp
 
 clean:
 	rm *.o raytracer

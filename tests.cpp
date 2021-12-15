@@ -422,24 +422,24 @@ void runTests() {
                0.358974358974358974,  0.358974358974358974,   0.435897435897435897,  0.923076923076923076,
               -0.692307692307692307, -0.692307692307692307,  -0.76923076923076923,  -1.923076923076923075  }));
 
-  Matrix m42(4, {9,3,0,9, -5,-2,-6,-3, -4,9,6,4, -7,6,6,2});
-  assert(m42.inverse() == Matrix(4, {
-            -0.0407407407407407374, -0.0777777777777777714, 0.1444444444444444326, -0.222222222222222204, 
-            -0.0777777777777777714, 0.0333333333333333306, 0.3666666666666666366, -0.333333333333333306, 
-            -0.0290123456790123433, -0.1462962962962962843, -0.1092592592592592503, 0.129629629629629619, 
-            0.1777777777777777632, 0.0666666666666666612, -0.2666666666666666448, 0.333333333333333306 }));
+    Matrix m42(4, {9,3,0,9, -5,-2,-6,-3, -4,9,6,4, -7,6,6,2});
+    assert(m42.inverse() == Matrix(4, {
+              -0.0407407407407407374, -0.0777777777777777714, 0.1444444444444444326, -0.222222222222222204, 
+              -0.0777777777777777714, 0.0333333333333333306, 0.3666666666666666366, -0.333333333333333306, 
+              -0.0290123456790123433, -0.1462962962962962843, -0.1092592592592592503, 0.129629629629629619, 
+              0.1777777777777777632, 0.0666666666666666612, -0.2666666666666666448, 0.333333333333333306 }));
 
 
-  // test the formula   (A * B) * inv(B) == A
-  Matrix matA(4, {3,-9,7,3, 3,-8,2,-9, -4,4,4,1, -6,5,-1,1});
-  Matrix matB(4, {8,2,2,2, 3,-1,7,0, 7,0,5,4, 6,-2,0,5});
-  Matrix matC = matA * matB;
-  assert(matC * matB.inverse() == matA);
-  assert((matA * matB) * matB.inverse() == matA);
-  assert(matA * matB.inverse() * matB * matA.inverse() == id4Matrix);
+    // test the formula   (A * B) * inv(B) == A
+    Matrix matA(4, {3,-9,7,3, 3,-8,2,-9, -4,4,4,1, -6,5,-1,1});
+    Matrix matB(4, {8,2,2,2, 3,-1,7,0, 7,0,5,4, 6,-2,0,5});
+    Matrix matC = matA * matB;
+    assert(matC * matB.inverse() == matA);
+    assert((matA * matB) * matB.inverse() == matA);
+    assert(matA * matB.inverse() * matB * matA.inverse() == id4Matrix);
 
-  // test trans(inv(A)) == inv(trans(A))
-  assert(matA.inverse().transpose() == matA.transpose().inverse());
+    // test trans(inv(A)) == inv(trans(A))
+    assert(matA.inverse().transpose() == matA.transpose().inverse());
   }
 
   {
@@ -464,6 +464,36 @@ void runTests() {
     assert(t1 * v == v);
   }
 
+  {
+    // scaling applied to a point
+    Matrix t1 = getScaling(2, 3, 4);
+    Point p1(-4, 6, 8);
+    Point p2 = t1 * p1;
+    assert(p2 == Point(-8, 18, 32));
+  }
+
+  {
+    // scaling applied to a vector
+    Matrix t1 = getScaling(2, 3, 4);
+    Vector v1(-4, 6, 8);
+    Vector v2 = t1 * v1;
+    assert(v2 == Vector(-8, 18, 32));
+  }
+
+  {
+    // multiplying by inverse of a scaling matrix
+    Matrix t1 = getScaling(2, 3, 4);
+    Matrix inv = t1.inverse();
+    Vector v1(-4, 6, 8);
+    assert(inv * v1 == Vector(-2, 2, 2));
+  }
+
+  {
+    // reflection
+    Matrix t1 = getScaling(-1, 1, 1);
+    Point p1(2, 3, 4);
+    assert(t1 * p1 == Point(-2, 3, 4));
+  }
   std::cout << "Tests completed.\n";
 }
 

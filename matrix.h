@@ -51,9 +51,14 @@ class Matrix {
 };
 
 Matrix operator*(const Matrix& lhs, const Matrix& rhs); // multiplication
-Tuple operator*(const Matrix& lhs, const Tuple& rhs); // multiplication with tuple
+Tuple  operator*(const Matrix& lhs, const Tuple& rhs);  // multiplication with point
+Point  operator*(const Matrix& lhs, const Point& rhs);  // multiplication with point
+Vector operator*(const Matrix& lhs, const Vector& rhs); // multiplication with vector
 
 static const Matrix id4Matrix(4, {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1});
 
-// return the 4x4 translation matrix for the distances x, y, z
+// return the 4x4 translation matrix as a new matrix
 Matrix getTranslation(float x, float y, float z);
+
+// Return the 4x4 scaling matrix as a new matrix
+Matrix getScaling(float x, float y, float z);

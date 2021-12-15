@@ -270,10 +270,17 @@ Matrix Matrix::inverse() const {
 }
 
 Matrix getTranslation(float x, float y, float z) {
-  Matrix m(4);
-  m = id4Matrix;
+  Matrix m = id4Matrix;
   m.setValue(0, 3, x);
   m.setValue(1, 3, y);
   m.setValue(2, 3, z);
+  return m;
+}
+
+Matrix getScaling(float x, float y, float z) {
+  Matrix m = id4Matrix;
+  m.setValue(0, 0, x);
+  m.setValue(1, 1, y);
+  m.setValue(2, 2, z);
   return m;
 }

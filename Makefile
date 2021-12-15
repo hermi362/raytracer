@@ -1,24 +1,27 @@
 # simple raytracer
 # based on the book "The Ray Tracer Challenge" by Jamis Buck
 
+CXXFLAGS = -std=c++14 -g -Wall
+
 raytracer:         main.o tests.o canvas.o matrix.o util.o
 	g++ -o raytracer main.o tests.o canvas.o matrix.o util.o
 
 main.o: main.cpp tuple.h color.h tests.h canvas.h
-	g++ -std=c++14 -g -Wall -c main.cpp
+	g++ $(CXXFLAGS) -c main.cpp
 
 tests.o: tests.cpp tuple.h color.h tests.h canvas.h matrix.h util.h
-	g++ -std=c++14 -g -Wall -c tests.cpp
+	g++ $(CXXFLAGS) -c tests.cpp
 
 canvas.o: canvas.cpp canvas.h color.h
-	g++ -std=c++14 -g -Wall -c canvas.cpp
+	g++ $(CXXFLAGS) -c canvas.cpp
 
 matrix.o: matrix.cpp matrix.h tuple.h util.h
-	g++ -std=c++14 -g -Wall -c matrix.cpp
+	g++ $(CXXFLAGS) -c matrix.cpp
 
 util.o: util.cpp util.h
-	g++ -std=c++14 -g -Wall -c util.cpp
+	g++ $(CXXFLAGS) -c util.cpp
 
+.PHONY: clean
 clean:
 	rm *.o raytracer
 

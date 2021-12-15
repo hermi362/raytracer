@@ -149,6 +149,28 @@ Tuple operator*(const Matrix& lhs, const Tuple& rhs) {
   return ret;
 }
 
+Point operator*(const Matrix& lhs, const Point& rhs) {
+  assert(lhs.dimension() == 4);   // this function only works on 4x4 matrices
+  Point ret;
+  ret.x = lhs.at(0,0)*rhs.x + lhs.at(0,1)*rhs.y + lhs.at(0,2)*rhs.z + lhs.at(0,3)*rhs.w;
+  ret.y = lhs.at(1,0)*rhs.x + lhs.at(1,1)*rhs.y + lhs.at(1,2)*rhs.z + lhs.at(1,3)*rhs.w;
+  ret.z = lhs.at(2,0)*rhs.x + lhs.at(2,1)*rhs.y + lhs.at(2,2)*rhs.z + lhs.at(2,3)*rhs.w;
+  ret.w = 1.0;
+  return ret;
+}
+
+Vector operator*(const Matrix& lhs, const Vector& rhs) {
+  assert(lhs.dimension() == 4);   // this function only works on 4x4 matrices
+  Vector ret;
+  ret.x = lhs.at(0,0)*rhs.x + lhs.at(0,1)*rhs.y + lhs.at(0,2)*rhs.z + lhs.at(0,3)*rhs.w;
+  ret.y = lhs.at(1,0)*rhs.x + lhs.at(1,1)*rhs.y + lhs.at(1,2)*rhs.z + lhs.at(1,3)*rhs.w;
+  ret.z = lhs.at(2,0)*rhs.x + lhs.at(2,1)*rhs.y + lhs.at(2,2)*rhs.z + lhs.at(2,3)*rhs.w;
+  ret.w = 0.0;
+  return ret;
+}
+
+
+
 // return a transposed copy of 'this'
 Matrix Matrix::transpose() const {
   Matrix ret(N);

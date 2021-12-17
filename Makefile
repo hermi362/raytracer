@@ -1,7 +1,7 @@
 # simple raytracer
 # based on the book "The Ray Tracer Challenge" by Jamis Buck
 
-CXXFLAGS = -std=c++14 -g -Wall
+CXXFLAGS = -std=c++14 -ggdb3 -Wall
 
 raytracer:         main.o tests.o canvas.o matrix.o util.o
 	g++ -o raytracer main.o tests.o canvas.o matrix.o util.o

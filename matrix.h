@@ -62,3 +62,9 @@ Matrix getTranslation(float x, float y, float z);
 
 // Return the 4x4 scaling matrix as a new matrix
 Matrix getScaling(float x, float y, float z);
+
+// Return the 4x4 rotation matrix about x, y or z axis. Rotation direction is
+// clockwise when looking at origin from positive side of x, y or z axis.
+Matrix getRotationX(float rads);
+Matrix getRotationY(float rads);
+Matrix getRotationZ(float rads);

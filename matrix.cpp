@@ -284,3 +284,30 @@ Matrix getScaling(float x, float y, float z) {
   m.setValue(2, 2, z);
   return m;
 }
+
+Matrix getRotationX(float r) {
+  Matrix ret = id4Matrix;
+  ret.setValue(1, 1, std::cos(r));
+  ret.setValue(1, 2, -std::sin(r));
+  ret.setValue(2, 1, std::sin(r));
+  ret.setValue(2, 2, std::cos(r));
+  return ret;  
+}
+
+Matrix getRotationY(float r) {
+  Matrix ret = id4Matrix;
+  ret.setValue(0, 0, std::cos(r));
+  ret.setValue(0, 2, std::sin(r));
+  ret.setValue(2, 0, -std::sin(r));
+  ret.setValue(2, 2, std::cos(r));
+  return ret;  
+}
+
+Matrix getRotationZ(float r) {
+  Matrix ret = id4Matrix;
+  ret.setValue(0, 0, std::cos(r));
+  ret.setValue(0, 1, -std::sin(r));
+  ret.setValue(1, 0, std::sin(r));
+  ret.setValue(1, 1, std::cos(r));
+  return ret;  
+}

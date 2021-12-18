@@ -494,6 +494,39 @@ void runTests() {
     Point p1(2, 3, 4);
     assert(t1 * p1 == Point(-2, 3, 4));
   }
+
+  { 
+    // rotation around x axis
+    const Point p(0, 1, 0);
+    Matrix half_quarter = getRotationX(PI/4);
+    Matrix full_quarter = getRotationX(PI/2);
+    assert(half_quarter * p == Point(0, ROOT2 / 2, ROOT2 / 2));
+    assert(full_quarter * p == Point(0, 0, 1));
+
+    // inverse of rotation about x axis
+    Matrix inv = half_quarter.inverse();
+    assert(inv * p == Point(0, ROOT2 / 2, -ROOT2 / 2));
+  }
+
+  {
+    // rotation about the y axis
+    const Point p(0, 0, 1);
+    Matrix half_quarter = getRotationY(PI/4);
+    Matrix full_quarter = getRotationY(PI/2);
+    assert(half_quarter * p == Point(ROOT2 / 2, 0, ROOT2 / 2));
+    assert(full_quarter * p == Point(1, 0, 0));
+  }
+
+  {
+    // rotation about the z axis
+    const Point p(0, 1, 0);
+    Matrix half_quarter = getRotationZ(PI/4);
+    Matrix full_quarter = getRotationZ(PI/2);
+    assert(half_quarter * p == Point(-ROOT2 / 2, ROOT2 / 2, 0));
+    assert(full_quarter * p == Point(-1, 0, 0));
+  }
+
+    
   std::cout << "Tests completed.\n";
 }
 

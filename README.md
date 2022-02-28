@@ -4,7 +4,7 @@ A C++ implementation of the simple raytracer from Jamis Buck's book "The Raytrac
 I am using this project to re-familiarize myself with C++ after being away for it for about a decade.
 
 ## Prerequisites
-- g++
+- gcc (g++)
 - gnu make
 
 For the record I developed this in Debian 10 using WSL (Windows Subsystem for Linux).

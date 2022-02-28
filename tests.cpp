@@ -526,6 +526,43 @@ void runTests() {
     assert(full_quarter * p == Point(-1, 0, 0));
   }
 
+  {
+    // shear tests
+
+    Matrix shear;
+    Point p;
+
+    // a shearing xform that moves x in proportion to y
+    shear = getShear(1,0,0,0,0,0);
+    p = Point(2,3,4);
+    assert(shear * p == Point(5,3,4));
+
+
+    // a shearing xform that moves x in proportion to z
+    shear = getShear(0,1,0,0,0,0);
+    p = Point(2,3,4);
+    assert(shear * p == Point(6,3,4));
+
+    // a shearing xform that moves y in proportion to x
+    shear = getShear(0,0,1,0,0,0);
+    p = Point(2,3,4);
+    assert(shear * p == Point(2,5,4));
+
+    // a shearing xform that moves y in proportion to z
+    shear = getShear(0,0,0,1,0,0);
+    p = Point(2,3,4);
+    assert(shear * p == Point(2,7,4));
+
+    // a shearing xform that moves z in proportion to x
+    shear = getShear(0,0,0,0,1,0);
+    p = Point(2,3,4);
+    assert(shear * p == Point(2,3,6));
+
+    // a shearing xform that moves z in proportion to y
+    shear = getShear(0,0,0,0,0,1);
+    p = Point(2,3,4);
+    assert(shear * p == Point(2,3,7));
+  }
     
   std::cout << "Tests completed.\n";
 }

@@ -311,3 +311,14 @@ Matrix getRotationZ(float r) {
   ret.setValue(1, 1, std::cos(r));
   return ret;  
 }
+
+Matrix getShear(float xy, float xz, float yx, float yz, float zx, float zy) {
+  Matrix ret = id4Matrix;
+  ret.setValue(0, 1, xy);
+  ret.setValue(0, 2, xz);
+  ret.setValue(1, 0, yx);
+  ret.setValue(1, 2, yz);
+  ret.setValue(2, 0, zx);
+  ret.setValue(2, 1, zy);
+  return ret;
+}

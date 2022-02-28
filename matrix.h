@@ -68,3 +68,9 @@ Matrix getScaling(float x, float y, float z);
 Matrix getRotationX(float rads);
 Matrix getRotationY(float rads);
 Matrix getRotationZ(float rads);
+
+// Return the 4x4 shear matrix
+// xy means x moved in proportion to y
+// xz means x moved in proportion to z
+// etc
+Matrix getShear(float xy, float xz, float yx, float yz, float zx, float zy);

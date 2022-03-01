@@ -563,6 +563,36 @@ void runTests() {
     p = Point(2,3,4);
     assert(shear * p == Point(2,3,7));
   }
+
+  { 
+    // chaining transformations pt1
+
+    // individual transforms are applied in sequence
+    Point p(1,0,1);
+    Matrix A = getRotationX(PI/2);
+    Matrix B = getScaling(5,5,5);
+    Matrix C = getTranslation(10,5,7);
+    // apply rotation first
+    Point p2 = A * p;
+    assert(p2 == Point(1, -1, 0));
+    // then apply scaling
+    Point p3 = B * p2;
+    assert(p3 == Point(5, -5, 0));
+    // then apply translation
+    Point p4 = C * p3;
+    assert(p4 == Point(15, 0, 7));
+  }
+  {
+    // chaining transformations pt2
+
+    // chained transformations must be applied in reverse order
+    Point p(1,0,1);
+    Matrix A = getRotationX(PI/2);
+    Matrix B = getScaling(5,5,5);
+    Matrix C = getTranslation(10,5,7);
+    Matrix T = C * B * A;
+    assert(T * p == Point(15,0,7));
+  }
     
   std::cout << "Tests completed.\n";
 }

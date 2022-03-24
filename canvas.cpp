@@ -16,7 +16,7 @@ Canvas::~Canvas() {
     delete[] mCanvas;
 }
 
-std::string Canvas::toString() {
+std::string Canvas::toString() const {
     const auto N = 50;
     char buffer[N];
     snprintf(buffer, N, "Canvas[%d,%d] (%d bytes)\n", 
@@ -24,11 +24,11 @@ std::string Canvas::toString() {
     return buffer;
 }
 
-Color Canvas::pixelAt(int i) {
+Color Canvas::pixelAt(int i) const {
   assert(i < mW*mH);
   return mCanvas[i];
 }
-Color Canvas::pixelAt(int x, int y) {
+Color Canvas::pixelAt(int x, int y) const {
   assert(x < mW  &&  y < mH);
   return mCanvas[y*mW + x];
 }
@@ -37,12 +37,6 @@ void Canvas::writePixel(int x, int y, const Color& c) {
   mCanvas[y*mW + x] = c;
 }
 
-// limit input value to range 0.0~1.0
-float Canvas::clamp(const float v) {
-  if (v > 1.0) return 1.0;
-  if (v < 0.0) return 0.0;
-  return v;
-}
 
 std::string Canvas::toPPM() {
   std::string buffer;

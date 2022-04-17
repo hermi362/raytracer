@@ -5,6 +5,10 @@
 // Implements a ray that will be cast around the scene
 class Ray
 {
+  private:
+    Point origin;
+    Vector direction;
+
   public:
     Ray() : Ray(Point(0,0,0), Vector(1,0,0)) {} // default constructor
 
@@ -19,9 +23,4 @@ class Ray
     Point getOrigin()  {return origin;}
     Vector getDirection() {return direction;}
     Point getPosition(float t);
-    
-  private:
-    Point origin;
-    Vector direction;
-
 };

@@ -52,13 +52,33 @@ void playProjectileGame() {
 } */
 
 
+void drawClock() {
+  std::cout << "Drawing clock..." << std::endl;
+  Canvas can(100, 100);
+  // draw a point at the center of the clock
+  can.writePixel(can.width()/2, can.width()/2, Color(1,1,1));
+
+  Point hourHand(40,0,0);
+  Matrix rotOneHour = getRotationZ(PI/6);
+  for (int i=0 ; i<12 ; i++) {
+    hourHand = rotOneHour * hourHand;
+    can.writePixel(can.width()/2 + hourHand.x, can.height()/2 + hourHand.y, Color(1,0,0));
+  }
+
+  std::ofstream ostrm("clock.ppm");
+  ostrm << can.toPPM();
+  std::cout << "Finished." << std::endl;
+}
+
+
 int main() {
 
   runTests();
 
 
   // nothing
-  // playProjectileGame();  
+  // playProjectileGame();
+  drawClock();
   return 0;
 }
 

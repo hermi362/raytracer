@@ -8,6 +8,7 @@
 #include "color.h"
 #include "canvas.h"
 #include "matrix.h"
+#include "ray.h"
 #include "util.h"
 
 void runTests() {
@@ -594,11 +595,27 @@ void runTests() {
     Matrix T = C * B * A;
     assert(T * p == Point(15,0,7));
   }
+
+  // ray tests
+  {
+    Point origin(1,2,3);
+    Vector direction(4,5,6);
+    Ray r(origin, direction);
+    assert(r.getOrigin() == origin && r.getDirection() == direction);
+  }
+  {
+    // compute a point from a distance
+    Ray r(Point(2,3,4), Vector(1,0,0));
+    assert(r.getPosition(0) == Point(2,3,4));
+    assert(r.getPosition(1) == Point(3,3,4));
+    assert(r.getPosition(-1) == Point(1,3,4));
+    assert(r.getPosition(2.5) == Point(4.5,3,4));
+  }
     
   std::cout << "Tests completed.\n";
 }
 
-
+// Use the canvas to draw a projectile's parabolic trajectory
 struct Projectile {
   Point position;
   Vector velocity;

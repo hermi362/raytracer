@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cassert>
+#include <string>
 #include "util.h"
 
 class Tuple {
@@ -55,6 +56,7 @@ class Point : public Tuple {
 public:
   Point(float _x, float _y, float _z) : Tuple(_x, _y, _z, 1.0){} 
   Point() : Point(0, 0, 0){}
+  Point(Tuple t) : Point(t.x, t.y, t.z){}
 };
 
 class Vector : public Tuple {

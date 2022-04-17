@@ -3,9 +3,8 @@
 int main() {
 
   runTests();
-
-  playProjectileGame();
-  drawClock();
+  // playProjectileGame();
+  // drawClock();
 
   return 0;
 }

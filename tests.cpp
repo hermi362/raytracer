@@ -9,6 +9,7 @@
 #include "canvas.h"
 #include "matrix.h"
 #include "ray.h"
+#include "sphere.h"
 #include "util.h"
 
 void runTests() {
@@ -610,6 +611,44 @@ void runTests() {
     assert(r.getPosition(1) == Point(3,3,4));
     assert(r.getPosition(-1) == Point(1,3,4));
     assert(r.getPosition(2.5) == Point(4.5,3,4));
+  }
+  {
+    //Test intersection of ray with sphere
+
+    // ray passing through sphere centre
+    Ray r(Point(0,0,-5), Vector(0,0,1));
+    Sphere s;
+    auto xs = s.intersect(r);
+    assert(xs.size() == 2);
+    assert(xs[0] == 4.0);
+    assert(xs[1] == 6.0);
+
+    // ray touching sphere at a tangent
+    r = Ray(Point(0,1,-5), Vector(0,0,1));
+    xs = s.intersect(r);
+    assert(xs.size() == 2);
+    assert(xs[0] == 5.0);
+    assert(xs[1] == 5.0);
+
+    // ray misses sphere
+    r = Ray(Point(0,2,-5), Vector(0,0,1));
+    xs = s.intersect(r);
+    assert(xs.size() == 0);
+
+    // ray originates inside sphere
+    r = Ray(Point(0,0,0), Vector(0,0,1));
+    xs = s.intersect(r);
+    assert(xs.size() == 2);
+    assert(xs[0] == -1.0);
+    assert(xs[1] == 1.0);
+
+    // sphere is completely behind the ray
+    r = Ray(Point(0,0,5), Vector(0,0,1));
+    xs = s.intersect(r);
+    assert(xs.size() == 2);
+    assert(xs[0] == -6.0);
+    assert(xs[1] == -4.0);
+
   }
     
   std::cout << "Tests completed.\n";

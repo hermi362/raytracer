@@ -62,6 +62,7 @@ public:
 class Vector : public Tuple {
 public:
   Vector(float _x, float _y, float _z) : Tuple(_x, _y, _z, 0.0){} 
+  Vector(Tuple t) : Vector(t.x, t.y, t.z){} 
   Vector() : Vector(0, 0, 0){}
   float magnitude() {return std::sqrt(x*x + y*y + z*z + w*w);}
   Vector normalize() {

@@ -2,7 +2,9 @@
 #include <vector>
 
 std::vector<float> Sphere::intersect(Ray r) const {
-  
+  // for details of algorithm, see
+  // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+
   // get vector from sphere centre to ray origin
   // (sphere is centered at 0,0,0)
   Vector vSphereToRay = r.getOrigin() - Point(0,0,0);

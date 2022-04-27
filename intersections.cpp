@@ -1,7 +1,8 @@
-#include "sphere.h"
-#include <vector>
+#include "intersections.h"
 
-std::vector<float> Sphere::intersect(Ray r) const {
+
+// Return a collection of t values where the ray r intersects the sphere
+std::vector<float> intersect(Ray r, Sphere sph) {
   // for details of algorithm, see
   // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 
@@ -34,3 +35,4 @@ std::vector<float> Sphere::intersect(Ray r) const {
 
   return ret;
 }
+

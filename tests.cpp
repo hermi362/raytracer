@@ -649,6 +649,38 @@ void runTests() {
     assert(xs.size() == 2);
     assert(xs[0].tVal == -6.0);
     assert(xs[1].tVal == -4.0);
+  }
+
+  {
+    // hit function
+
+    // all intersections have positive t
+    Sphere s;
+    Isect i1(1, &s);
+    Isect i2(2, &s);
+    std::vector<Isect> xs {i2, i1};
+    Isect i = hit(xs);
+    assert(i == i1);
+
+    // some intersections have negative t
+    i1.tVal = -1;
+    i2.tVal = 1;
+    i = hit({i2, i1});
+    assert(i == i2);
+
+    // all intersections have negative t
+    i1.tVal = -2;
+    i2.tVal = -1;
+    i = hit({i2, i1});
+    assert(i == NULLISECT);
+
+    // lowest non-negative intersection
+    i1.tVal = 5;
+    i2.tVal = 7;
+    Isect i3(-3, &s);
+    Isect i4(2, &s);
+    i = hit({i1, i2, i3, i4});
+    assert(i == i4);
 
   }
     

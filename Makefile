@@ -24,7 +24,7 @@ ray.o: ray.cpp ray.h tuple.h
 util.o: util.cpp util.h
 	g++ $(CXXFLAGS) -c util.cpp
 
-intersections.o:  intersections.h ray.h sphere.h
+intersections.o:  intersections.cpp intersections.h ray.h sphere.h
 	g++ $(CXXFLAGS) -c intersections.cpp
 
 .PHONY: clean

@@ -39,3 +39,27 @@ std::vector<Isect> intersect(Ray r, Sphere* pSph) {
   return ret;
 }
 
+
+// Takes a collection of intersections and returns the one that is visible
+Isect hit(const std::vector<Isect>& xs) {
+  Isect minHit = NULLISECT;  // keep track of Isect with lowest non-neg t-value
+
+  auto i = xs.begin(); // create an iterator
+  while (i != xs.end()) {
+    if (i->tVal > 0) {
+      if (minHit == NULLISECT) {  // this is the first non-neg intersection found
+        // minHit.tVal = i->tVal;
+        // minHit.obj  = i->obj;
+        minHit = *i;
+      }
+      else if (i->tVal < minHit.tVal) {  // this is a better non-neg intersection
+        // minHit.tVal = i->tVal;
+        // minHit.obj  = i->obj;
+        minHit = *i;
+      }
+    }
+    i++;
+  }
+
+  return minHit;
+}

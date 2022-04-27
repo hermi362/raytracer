@@ -619,36 +619,36 @@ void runTests() {
     // ray passing through sphere centre
     Ray r(Point(0,0,-5), Vector(0,0,1));
     Sphere s;
-    auto xs = intersect(r,s);
+    auto xs = intersect(r,&s);
     assert(xs.size() == 2);
-    assert(xs[0] == 4.0);
-    assert(xs[1] == 6.0);
+    assert(xs[0].tVal == 4.0);
+    assert(xs[1].tVal == 6.0);
 
     // ray touching sphere at a tangent
     r = Ray(Point(0,1,-5), Vector(0,0,1));
-    xs = intersect(r,s);
+    xs = intersect(r,&s);
     assert(xs.size() == 2);
-    assert(xs[0] == 5.0);
-    assert(xs[1] == 5.0);
+    assert(xs[0].tVal == 5.0);
+    assert(xs[1].tVal == 5.0);
 
     // ray misses sphere
     r = Ray(Point(0,2,-5), Vector(0,0,1));
-    xs = intersect(r,s);
+    xs = intersect(r,&s);
     assert(xs.size() == 0);
 
     // ray originates inside sphere
     r = Ray(Point(0,0,0), Vector(0,0,1));
-    xs = intersect(r,s);
+    xs = intersect(r,&s);
     assert(xs.size() == 2);
-    assert(xs[0] == -1.0);
-    assert(xs[1] == 1.0);
+    assert(xs[0].tVal == -1.0);
+    assert(xs[1].tVal == 1.0);
 
     // sphere is completely behind the ray
     r = Ray(Point(0,0,5), Vector(0,0,1));
-    xs = intersect(r,s);
+    xs = intersect(r,&s);
     assert(xs.size() == 2);
-    assert(xs[0] == -6.0);
-    assert(xs[1] == -4.0);
+    assert(xs[0].tVal == -6.0);
+    assert(xs[1].tVal == -4.0);
 
   }
     

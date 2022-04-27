@@ -2,7 +2,7 @@
 
 
 // Return a collection of t values where the ray r intersects the sphere
-std::vector<float> intersect(Ray r, Sphere sph) {
+std::vector<Isect> intersect(Ray r, Sphere* pSph) {
   // for details of algorithm, see
   // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 
@@ -16,7 +16,7 @@ std::vector<float> intersect(Ray r, Sphere sph) {
 
   auto discriminant = b*b - 4*a*c;
 
-  std::vector<float> ret; // create emtpy return vector
+  std::vector<Isect> ret; // create emtpy return vector
 
   if (discriminant < 0) // no intersections found
     return ret;
@@ -24,12 +24,15 @@ std::vector<float> intersect(Ray r, Sphere sph) {
   auto t1 = (-b - sqrt(discriminant)) / (2*a);
   auto t2 = (-b + sqrt(discriminant)) / (2*a);
 
+  Isect i1(t1, pSph); 
+  Isect i2(t2, pSph);
+
   if (t1 <= t2) {
-    ret.push_back(t1);
-    ret.push_back(t2);
+    ret.push_back(i1);
+    ret.push_back(i2);
   } else {
-    ret.push_back(t2);  // reverse the order
-    ret.push_back(t1);
+    ret.push_back(i2);  // reverse the order
+    ret.push_back(i1);
   }
   // postcond: elements are in ascending order
 

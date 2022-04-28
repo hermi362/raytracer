@@ -18,7 +18,7 @@ canvas.o: canvas.cpp canvas.h color.h
 matrix.o: matrix.cpp matrix.h tuple.h util.h
 	g++ $(CXXFLAGS) -c matrix.cpp
 
-ray.o: ray.cpp ray.h tuple.h
+ray.o: ray.cpp ray.h tuple.h matrix.h
 	g++ $(CXXFLAGS) -c ray.cpp
 
 util.o: util.cpp util.h

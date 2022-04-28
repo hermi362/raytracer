@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tuple.h"
+#include "matrix.h"
 
 // Implements a ray that will be cast around the scene
 class Ray
@@ -22,5 +23,8 @@ class Ray
     // by reference (as a potentially significant optimization).
     Point getOrigin()  {return origin;}
     Vector getDirection() {return direction;}
+
     Point getPosition(float t);
+
+    Ray transform(const Matrix& m);
 };

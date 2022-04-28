@@ -12,6 +12,7 @@ struct Isect {
   bool operator==(Isect rhs) {
     return tVal == rhs.tVal && obj == rhs.obj;
   }
+  bool operator!=(Isect rhs) {return !(*this==rhs);}
 };
 
 const static Isect NULLISECT(0.f, nullptr);  // special value used to indicate null result

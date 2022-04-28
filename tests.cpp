@@ -681,6 +681,42 @@ void runTests() {
     Isect i4(2, &s);
     i = hit({i1, i2, i3, i4});
     assert(i == i4);
+  }
+
+  {
+    // ray transformations
+
+    // translating a ray
+    Ray r(Point(1,2,3), Vector(0,1,0));
+    Matrix m = getTranslation(3,4,5);
+    Ray r2 = r.transform(m);
+    assert(r2.getOrigin() == Point(4,6,8));
+    assert(r2.getDirection() == Vector(0,1,0));
+
+    // scaling a ray
+    m = getScaling(2,3,4);
+    r2 = r.transform(m);
+    assert(r2.getOrigin() == Point(2,6,12));
+    assert(r2.getDirection() == Vector(0,3,0));
+  }
+
+  {
+    // sphere transformations
+
+    // intersecting a scaled sphere with a ray
+    Ray r(Point(0,0,-5), Vector(0,0,1));
+    Sphere s;
+    s.setTransform(getScaling(2,2,2));
+    std::vector<Isect> xs = intersect(r, &s);
+    assert(xs.size() == 2);
+    assert(xs[0].tVal == 3);
+    assert(xs[1].tVal == 7);
+
+    // intersecting a translated sphere with a ray
+    r = Ray(Point(0,0,-5), Vector(0,0,1));
+    s.setTransform(getTranslation(5,0,0));
+    xs = intersect(r, &s);
+    assert(xs.size() == 0);
 
   }
     
@@ -751,3 +787,50 @@ void drawClock() {
 }
 
 
+// ray-trace a sphere against a square canvas using hit/nonhit only.
+// This should draw a solid circle on canvas.
+void rayTraceSphere() {
+  std::cout << "Rendering sphere..." << std::endl;
+
+  int canvas_pixels = 100;
+  Canvas can(canvas_pixels, canvas_pixels);
+  Color red(1,0,0);  // color to draw sphere's silhouette
+
+  Point ray_origin(0,0,-5.f);
+  float wall_z = 10.f;
+  float wall_size = 7.f;
+  float pixel_size = wall_size / canvas_pixels;
+  float half = wall_size / 2;
+
+  Sphere sphere;
+  // sphere.setTransform(getTranslation(0.5,0,0));
+  // sphere.setTransform(getScaling(1, 0.5, 1));
+  // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.5, 1) * getTranslation(0.5, 0, 0) );
+  sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+
+  for (int y=0 ; y<canvas_pixels ; y++) {
+    float world_y = half - pixel_size * y;
+
+    for (int x=0 ; x<canvas_pixels ; x++) {
+      float world_x = -half + pixel_size * x;
+
+      // describe the point on wall that ray will target
+      Point position(world_x, world_y, wall_z);
+
+      Vector ray_direction(position - ray_origin);
+      Ray r(ray_origin, ray_direction.normalize());
+      auto xs = intersect(r, &sphere);
+
+      Isect raytrace_result = hit(xs);
+      if (raytrace_result != NULLISECT) {
+        // ray has hit sphere
+        can.writePixel(x, y, red);
+      }
+    }
+  }
+
+  std::ofstream ostrm("sphere.ppm");
+  ostrm << can.toPPM();
+  std::cout << "Finished." << std::endl;
+
+}

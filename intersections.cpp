@@ -6,6 +6,9 @@ std::vector<Isect> intersect(Ray r, Sphere* pSph) {
   // for details of algorithm, see
   // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 
+  // transform ray by inverse of sphere's transform
+  r = r.transform(pSph->mTransform.inverse());
+
   // get vector from sphere centre to ray origin
   // (sphere is centered at 0,0,0)
   Vector vSphereToRay = r.getOrigin() - Point(0,0,0);

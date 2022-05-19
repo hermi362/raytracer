@@ -3,7 +3,7 @@
 bool isEqualEnough(float f1, float f2) {
 
   // permissible error below which two floating-point values are considered equal
-  static const auto TOLERANCE = 0.00001;
+  static const float TOLERANCE = 0.00001f;
   
   auto epsilon = (f1 - f2);
   if (epsilon < 0) 

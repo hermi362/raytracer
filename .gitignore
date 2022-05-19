@@ -6,3 +6,6 @@ raytracer
 
 # debugger stuff
 .gdb*
+
+# rendered images
+*.ppm

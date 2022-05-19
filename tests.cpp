@@ -817,13 +817,12 @@ void rayTraceSphere() {
       // describe the point on wall that ray will target
       Point position(world_x, world_y, wall_z);
 
-      Vector ray_direction(position - ray_origin);
-      Ray r(ray_origin, ray_direction.normalize());
+      Vector ray_direction = Vector(position - ray_origin).normalize();
+      Ray r(ray_origin, ray_direction);
       auto xs = intersect(r, &sphere);
 
       Isect raytrace_result = hit(xs);
-      if (raytrace_result != NULLISECT) {
-        // ray has hit sphere
+      if (raytrace_result.isHit()) {
         film.writePixel(x, y, red);
       }
 

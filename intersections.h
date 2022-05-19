@@ -1,6 +1,7 @@
 #include <vector>
 #include "ray.h"
 #include "sphere.h"
+#include "util.h"
 
 // encapsulates a ray-object intersection
 struct Isect {
@@ -10,9 +11,13 @@ struct Isect {
   Isect(float t, Sphere* o) : tVal(t), obj(o) {}
 
   bool operator==(Isect rhs) {
-    return tVal == rhs.tVal && obj == rhs.obj;
+    return isEqualEnough(tVal, rhs.tVal) && obj == rhs.obj;
   }
   bool operator!=(Isect rhs) {return !(*this==rhs);}
+
+  bool isHit() {
+    return *this != Isect(0.f, nullptr);
+  }
 };
 
 const static Isect NULLISECT(0.f, nullptr);  // special value used to indicate null result

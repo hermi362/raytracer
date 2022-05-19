@@ -3,14 +3,14 @@
 #include "color.h"
 #include <string>
 
-// Canvas is a 2D array of Color values.
-class Canvas {
+// Film is a 2D array of Color values.
+class Film {
   private:
-    Color* mCanvas;
-    int mW, mH;  // width and height of canvas
+    Color* mFilm;
+    int mW, mH;  // width and height in pixels
   public:
-    Canvas(int w, int h);
-    ~Canvas();
+    Film(int w, int h);
+    ~Film();
 
     int width() const {return mW;}
     int height() const {return mH;}

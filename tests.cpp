@@ -6,7 +6,7 @@
 
 #include "tuple.h"
 #include "color.h"
-#include "canvas.h"
+#include "film.h"
 #include "matrix.h"
 #include "ray.h"
 #include "sphere.h"
@@ -177,42 +177,42 @@ void runTests() {
   }
 
   {
-    // canvas tests
+    // film tests
     const int W=480*1;
     const int H=270*1;
-    Canvas can(W, H);
-    // std::cout << can.toString();
+    Film film(W, H);
+    // std::cout << film.toString();
     for (int i=0; i<W*H; ++i) 
-      assert(can.pixelAt(i) == Color(0,0,0));
+      assert(film.pixelAt(i) == Color(0,0,0));
 
     for (int y=0; y<H; ++y) 
       for (int x=0; x<W; ++x)
-        assert(can.pixelAt(x, y) == Color(0,0,0));
+        assert(film.pixelAt(x, y) == Color(0,0,0));
 
     Color red(1, 0, 0);
-    can.writePixel(2, 3, red);
-    assert(can.pixelAt(2, 3) == red);
+    film.writePixel(2, 3, red);
+    assert(film.pixelAt(2, 3) == red);
 
-    // create a canvas, add some pixel data, check output.
-    Canvas can2(5, 3);
+    // create a film, add some pixel data, check output.
+    Film film2(5, 3);
     Color c1(1.5, 0, 0);
     Color c2(0, 0.5, 0);
     Color c3(-0.5, 0, 1);
-    can2.writePixel(0, 0, c1);
-    can2.writePixel(2, 1, c2);
-    can2.writePixel(4, 2, c3);
-    // std::cout << can2.toPPM();
-    assert(can2.toPPM() == "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n0 0 0 0 0 0 0 127 0 0 0 0 0 0 0 \n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 \n\n");
+    film2.writePixel(0, 0, c1);
+    film2.writePixel(2, 1, c2);
+    film2.writePixel(4, 2, c3);
+    // std::cout << film2.toPPM();
+    assert(film2.toPPM() == "P3\n5 3\n255\n255 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \n0 0 0 0 0 0 0 127 0 0 0 0 0 0 0 \n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 \n\n");
 
-    // create a canvas, fill it with pixels of same color, check output.
-    Canvas can3(10, 2);
+    // create a film, fill it with pixels of same color, check output.
+    Film film3(10, 2);
     for (int y=0 ; y<2 ; ++y) {
       for (int x=0 ; x<10 ; ++x) {
-        can3.writePixel(x, y, Color(1, 0.8, 0.6));
+        film3.writePixel(x, y, Color(1, 0.8, 0.6));
       }   
     }
-    // std::cout << can3.toPPM();
-    assert(can3.toPPM() == "P3\n10 2\n255\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n\n");
+    // std::cout << film3.toPPM();
+    assert(film3.toPPM() == "P3\n10 2\n255\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 \n\n");
   }
 
   {
@@ -723,7 +723,7 @@ void runTests() {
   std::cout << "Tests completed.\n";
 }
 
-// Use the canvas to draw a projectile's parabolic trajectory
+// Use the film to draw a projectile's parabolic trajectory
 struct Projectile {
   Point position;
   Vector velocity;
@@ -747,7 +747,7 @@ void playProjectileGame() {
   e.gravity = Vector(0, -1, 0);
   e.wind    = Vector(-0.2, 0, 0);
 
-  Canvas can(160, 100);
+  Film film(160, 100);
   auto i = 30;
   while(i-- > 0)
   {
@@ -755,63 +755,63 @@ void playProjectileGame() {
     printf("(%2.3f,%2.3f)  [%2.3f, %2.3f]\n", p.position.x, p.position.y, p.velocity.x, p.velocity.y);
     const int x = (int)p.position.x;
     const int y = (int)p.position.y;
-    if (x > 0 && x < can.width() && y > 0 && y < can.height()) {
-      can.writePixel(x, can.height()-y, Color(1,0,0));
+    if (x > 0 && x < film.width() && y > 0 && y < film.height()) {
+      film.writePixel(x, film.height()-y, Color(1,0,0));
     }
   }
 
   std::ofstream ostrm("projectile.ppm");
-  ostrm << can.toPPM();
+  ostrm << film.toPPM();
 
 }
 
 
 
-// Use canvas and rotation matrix to draw the hour pips of a clock face
+// Use film and rotation matrix to draw the hour pips of a clock face
 void drawClock() {
   std::cout << "Drawing clock..." << std::endl;
-  Canvas can(100, 100);
+  Film film(100, 100);
   // draw a point at the center of the clock
-  can.writePixel(can.width()/2, can.width()/2, Color(1,1,1));
+  film.writePixel(film.width()/2, film.width()/2, Color(1,1,1));
 
   Point hourHand(40,0,0);
   Matrix rotOneHour = getRotationZ(PI/6);
   for (int i=0 ; i<12 ; i++) {
     hourHand = rotOneHour * hourHand;
-    can.writePixel(can.width()/2 + hourHand.x, can.height()/2 + hourHand.y, Color(1,0,0));
+    film.writePixel(film.width()/2 + hourHand.x, film.height()/2 + hourHand.y, Color(1,0,0));
   }
 
   std::ofstream ostrm("clock.ppm");
-  ostrm << can.toPPM();
+  ostrm << film.toPPM();
   std::cout << "Finished." << std::endl;
 }
 
 
-// ray-trace a sphere against a square canvas using hit/nonhit only.
-// This should draw a solid circle on canvas.
+// ray-trace a sphere against a square film using hit/nonhit only.
+// This should draw a solid circle on film.
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
 
-  int canvas_pixels = 100;
-  Canvas can(canvas_pixels, canvas_pixels);
+  int film_pixels = 100;
+  Film film(film_pixels, film_pixels);
   Color red(1,0,0);  // color to draw sphere's silhouette
 
-  Point ray_origin(0,0,-5.f);
+  Point ray_origin(0,0,-10.f);
   float wall_z = 10.f;
   float wall_size = 7.f;
-  float pixel_size = wall_size / canvas_pixels;
+  float pixel_size = wall_size / film_pixels;
   float half = wall_size / 2;
 
   Sphere sphere;
   // sphere.setTransform(getTranslation(0.5,0,0));
   // sphere.setTransform(getScaling(1, 0.5, 1));
   // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.5, 1) * getTranslation(0.5, 0, 0) );
-  sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+  // sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
 
-  for (int y=0 ; y<canvas_pixels ; y++) {
+  for (int y=0 ; y<film_pixels ; y++) {
     float world_y = half - pixel_size * y;
 
-    for (int x=0 ; x<canvas_pixels ; x++) {
+    for (int x=0 ; x<film_pixels ; x++) {
       float world_x = -half + pixel_size * x;
 
       // describe the point on wall that ray will target
@@ -824,13 +824,15 @@ void rayTraceSphere() {
       Isect raytrace_result = hit(xs);
       if (raytrace_result != NULLISECT) {
         // ray has hit sphere
-        can.writePixel(x, y, red);
+        film.writePixel(x, y, red);
       }
+
     }
+
   }
 
   std::ofstream ostrm("sphere.ppm");
-  ostrm << can.toPPM();
+  ostrm << film.toPPM();
   std::cout << "Finished." << std::endl;
 
 }

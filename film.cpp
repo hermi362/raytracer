@@ -1,44 +1,44 @@
-#include "canvas.h"
+#include "film.h"
 #include <cassert>
 
-Canvas::Canvas(int w, int h) {
+Film::Film(int w, int h) {
   mW = w;
   mH = h;
-  mCanvas = new Color[w*h];
+  mFilm = new Color[w*h];
 
   // initialize every pixel to 0,0,0
   for (int i=0; i<w*h; ++i) {
-    mCanvas[i].setColor(0,0,0);
+    mFilm[i].setColor(0,0,0);
   }
 }
 
-Canvas::~Canvas() {
-    delete[] mCanvas;
+Film::~Film() {
+    delete[] mFilm;
 }
 
-std::string Canvas::toString() const {
+std::string Film::toString() const {
     const auto N = 50;
     char buffer[N];
-    snprintf(buffer, N, "Canvas[%d,%d] (%d bytes)\n", 
+    snprintf(buffer, N, "Film[%d,%d] (%d bytes)\n", 
       mW, mH, int(sizeof(Color) * mW * mH ));
     return buffer;
 }
 
-Color Canvas::pixelAt(int i) const {
+Color Film::pixelAt(int i) const {
   assert(i < mW*mH);
-  return mCanvas[i];
+  return mFilm[i];
 }
-Color Canvas::pixelAt(int x, int y) const {
+Color Film::pixelAt(int x, int y) const {
   assert(x < mW  &&  y < mH);
-  return mCanvas[y*mW + x];
+  return mFilm[y*mW + x];
 }
-void Canvas::writePixel(int x, int y, const Color& c) {
+void Film::writePixel(int x, int y, const Color& c) {
   assert(x < mW  &&  y < mH);
-  mCanvas[y*mW + x] = c;
+  mFilm[y*mW + x] = c;
 }
 
 
-std::string Canvas::toPPM() {
+std::string Film::toPPM() {
   std::string buffer;
 
   // header start

@@ -29,3 +29,6 @@ class Ray
 
     Ray transform(const Matrix& m);
 };
+
+// compute reflection of incoming vector on surface defined by a normal
+Vector reflect(const Vector& in, const Vector& normal);

@@ -14,3 +14,7 @@ Ray Ray::transform(const Matrix& m) {
   
   return ret;
 }
+
+Vector reflect(const Vector& in, const Vector& normal) {
+  return in - normal * 2.0f * in.dot(normal);
+}

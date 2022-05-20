@@ -6,15 +6,16 @@
 #include <initializer_list>
 #include <memory>
 
-#include "tuple.h"
+#include "point.h"
+#include "vector.h"
 
 
 // implements a square (NxN) matrix
+// elements are in row-major order, unlike OpenGL's column-major order
 class Matrix {
   private:
     int N;          // matrix size (N*N)
     std::unique_ptr<float[]> mPtr;  // store matrix data as 1-dimensional array in a managed pointer
-    float at(int i) const { return mPtr[i]; } // get matrix value at array index i
   public:
     Matrix(int dim);  // create zero-filled matrix of given dim
     Matrix(int dim, std::initializer_list<float> values); // initialize from list of floats
@@ -31,6 +32,7 @@ class Matrix {
 
     int dimension() const { return N; } // get matrix size (N)
     float at(int row, int col) const;  // get single matrix value at (row,col), first element is at (0,0)
+    float at(int i) const { return mPtr[i]; } // get matrix value at array index i
 
     bool operator==(const Matrix& rhs) const;  // test for equality.
     bool operator!=(Matrix& rhs) const { return !operator==(rhs); }
@@ -51,7 +53,6 @@ class Matrix {
 };
 
 Matrix operator*(const Matrix& lhs, const Matrix& rhs); // multiplication
-Tuple  operator*(const Matrix& lhs, const Tuple& rhs);  // multiplication with point
 Point  operator*(const Matrix& lhs, const Point& rhs);  // multiplication with point
 Vector operator*(const Matrix& lhs, const Vector& rhs); // multiplication with vector
 

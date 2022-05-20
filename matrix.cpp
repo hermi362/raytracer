@@ -139,33 +139,26 @@ Matrix operator*(const Matrix& lhs, const Matrix& rhs) {
   return ret;
 }
 
-Tuple operator*(const Matrix& lhs, const Tuple& rhs) {
-  assert(lhs.dimension() == 4);   // this function only works on 4x4 matrices
-  Tuple ret;
-  ret.x = lhs.at(0,0)*rhs.x + lhs.at(0,1)*rhs.y + lhs.at(0,2)*rhs.z + lhs.at(0,3)*rhs.w;
-  ret.y = lhs.at(1,0)*rhs.x + lhs.at(1,1)*rhs.y + lhs.at(1,2)*rhs.z + lhs.at(1,3)*rhs.w;
-  ret.z = lhs.at(2,0)*rhs.x + lhs.at(2,1)*rhs.y + lhs.at(2,2)*rhs.z + lhs.at(2,3)*rhs.w;
-  ret.w = lhs.at(3,0)*rhs.x + lhs.at(3,1)*rhs.y + lhs.at(3,2)*rhs.z + lhs.at(3,3)*rhs.w;
-  return ret;
-}
 
-Point operator*(const Matrix& lhs, const Point& rhs) {
-  assert(lhs.dimension() == 4);   // this function only works on 4x4 matrices
+Point operator*(const Matrix& m, const Point& p) {
+  assert(m.dimension() == 4);   // this function only works on 4x4 matrices
   Point ret;
-  ret.x = lhs.at(0,0)*rhs.x + lhs.at(0,1)*rhs.y + lhs.at(0,2)*rhs.z + lhs.at(0,3)*rhs.w;
-  ret.y = lhs.at(1,0)*rhs.x + lhs.at(1,1)*rhs.y + lhs.at(1,2)*rhs.z + lhs.at(1,3)*rhs.w;
-  ret.z = lhs.at(2,0)*rhs.x + lhs.at(2,1)*rhs.y + lhs.at(2,2)*rhs.z + lhs.at(2,3)*rhs.w;
-  ret.w = 1.0;
+  
+  ret.x = m.at(0)*p.x + m.at(1)*p.y + m.at(2)*p.z + m.at(3);
+  ret.y = m.at(4)*p.x + m.at(5)*p.y + m.at(6)*p.z + m.at(7);
+  ret.z = m.at(8)*p.x + m.at(9)*p.y + m.at(10)*p.z + m.at(11);
+  ret.w = 1.0f;  // careful, this optimization relies on points always having w=1
   return ret;
 }
 
-Vector operator*(const Matrix& lhs, const Vector& rhs) {
-  assert(lhs.dimension() == 4);   // this function only works on 4x4 matrices
+Vector operator*(const Matrix& m, const Vector& v) {
+  assert(m.dimension() == 4);   // this function only works on 4x4 matrices
   Vector ret;
-  ret.x = lhs.at(0,0)*rhs.x + lhs.at(0,1)*rhs.y + lhs.at(0,2)*rhs.z + lhs.at(0,3)*rhs.w;
-  ret.y = lhs.at(1,0)*rhs.x + lhs.at(1,1)*rhs.y + lhs.at(1,2)*rhs.z + lhs.at(1,3)*rhs.w;
-  ret.z = lhs.at(2,0)*rhs.x + lhs.at(2,1)*rhs.y + lhs.at(2,2)*rhs.z + lhs.at(2,3)*rhs.w;
-  ret.w = 0.0;
+
+  ret.x = m.at(0)*v.x + m.at(1)*v.y + m.at(2)*v.z; // + m.at(3)*v.w;
+  ret.y = m.at(4)*v.x + m.at(5)*v.y + m.at(6)*v.z; // + m.at(7)*v.w;
+  ret.z = m.at(8)*v.x + m.at(9)*v.y + m.at(10)*v.z; // + m.at(11)*v.w;
+  ret.w = 0.0f; // careful, this optimization relies on vectors always having w=0
   return ret;
 }
 

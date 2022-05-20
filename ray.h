@@ -1,6 +1,7 @@
 #pragma once
 
-#include "tuple.h"
+#include "vector.h"
+#include "point.h"
 #include "matrix.h"
 
 // Implements a ray that will be cast around the scene

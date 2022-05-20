@@ -4,7 +4,8 @@
 #include <vector>
 #include <fstream>
 
-#include "tuple.h"
+#include "point.h"
+#include "vector.h"
 #include "color.h"
 #include "film.h"
 #include "matrix.h"
@@ -18,42 +19,30 @@ void runTests() {
     Point p;
     assert(p == Point(0,0,0));
     assert(Point() == Point(0,0,0));
-    assert(Point() == Tuple(0,0,0,1));
-    Vector v;
-    assert(v == Vector(0,0,0));
-    assert(Vector() == Vector(0,0,0));
-    assert(Vector() == Tuple(0,0,0,0));
-  }
-  {
-    // assignment test
-    Tuple t(1,2,3,4);
-    Vector v(0,0,0);
-    t = v;
-    // v = t; should produce error, you can't assign a tuple to a vector.
   }
   {
     // equality test
-    Tuple t1(1.0, 1.0, 1.0, 1.0);
-    Tuple t2(1.0, 1.0, 1.0, 1.0);
+    Point t1(1.0, 1.0, 1.0, 1.0);
+    Point t2(1.0, 1.0, 1.0, 1.0);
     assert(t1 == t2);
-    t1 = Tuple(1.0, 1.0, 1.0, 1.0);
-    t2 = Tuple(1.00000001, 0.99999999, 1.0, 1);
+    t1 = Point(1.0, 1.0, 1.0, 1.0);
+    t2 = Point(1.00000001, 0.99999999, 1.0, 1);
     assert(t1 == t2);    
-    t1 = Tuple(1.0, 1.0, 1.0, 1.0);
-    t2 = Tuple(2, 1, 1.0, 1);
+    t1 = Point(1.0, 1.0, 1.0, 1.0);
+    t2 = Point(2, 1, 1.0, 1);
     assert(t1 != t2);    
   }
   {
     // adding pointers and vectors
     Point p1 = Point(1.0, 1.2, 4.2);
     Vector v1 = Vector(10,10,10);
-    Tuple t1 = p1 + v1;
-    assert(t1 ==  Tuple(1.0+10, 1.2+10, 4.2+10, 1.0+0.0));
-    t1 = v1 + p1;
-    assert(t1 ==  Tuple(1.0+10, 1.2+10, 4.2+10, 1.0+0.0));
+    Point p2 = p1 + v1;
+    assert(p2 ==  Point(1.0+10, 1.2+10, 4.2+10, 1.0+0.0));
+    p2 = v1 + p1;
+    assert(p2 ==  Point(1.0+10, 1.2+10, 4.2+10, 1.0+0.0));
 
     // adding a point and a vector yields a point (not a vector)
-    Point p2(1,2,3);
+    p2 = Point(1,2,3);
     Vector v2(10,10,10);
     assert(p2 + v2 == Point(11,12,13));
     assert(v2 + p2 == Point(11,12,13));
@@ -89,16 +78,15 @@ void runTests() {
     assert(zero - v == Vector(-1, 2, -3));
   }
   {
-    // negating a tuple
-    auto a = Tuple(1, -2, 3, -4);
-    assert( -a == Tuple(-1, 2, -3, 4));
+    // negating a point
+    auto a = Point(1, -2, 3, -4);
+    assert( -a == Point(-1, 2, -3, 4));
+    // negating a vector
+    auto v = Vector(1, -2, 3, -4);
+    assert( -v == Vector(-1, 2, -3, 4));
   }
   {
     // chained addition
-    Tuple a(0,1,2,3);
-    Tuple b(4,5,6,7);
-    Tuple c(8,9,0,1);
-    assert(a+b+c == Tuple(12,15,8,11));
     Vector v1(0,1,2);
     Vector v2(4,5,6);
     Vector v3(8,9,0);
@@ -106,17 +94,17 @@ void runTests() {
     // std::cout<<"vector chained addition also OK\n";
   }
   {
-    // multiply a tuple by a scalar
-    Tuple a(1, -2, 3, -4);
-    assert( a*3.5 == Tuple(3.5, -7, 10.5, -14));
-    assert( 3.5*a == Tuple(3.5, -7, 10.5, -14));
-    assert( a*0.5 == Tuple(0.5, -1, 1.5, -2));
-    assert( 0.5*a == Tuple(0.5, -1, 1.5, -2));
+    // multiply a vector by a scalar
+    Vector a(1, -2, 3, -4);
+    assert( a*3.5 == Vector(3.5, -7, 10.5, -14));
+    assert( 3.5*a == Vector(3.5, -7, 10.5, -14));
+    assert( a*0.5 == Vector(0.5, -1, 1.5, -2));
+    assert( 0.5*a == Vector(0.5, -1, 1.5, -2));
   }
   {
-    // divide tuple by a scalar
-    Tuple a(1, -2, 3, -4);
-    assert( a/2 == Tuple(0.5, -1, 1.5, -2));
+    // divide vector by a scalar
+    Vector a(1, -2, 3, -4);
+    assert( a/2 == Vector(0.5, -1, 1.5, -2));
   }
   {
     // magnitude of vector
@@ -298,13 +286,17 @@ void runTests() {
     // std::cout << (m11 * m10).toString();
     assert(m10*m11 == m12);
 
-    // test matrix-tuple multiplication
+    // test matrix-point multiplication
     Matrix m13(4, {1,  2,  3,  4, 
                   2,  4,  4,  2, 
                   8,  6,  4,  1,  
                   0,  0,  0,  1});
-    Tuple t1(1, 2, 3, 1);
-    assert((m13 * t1) == Tuple(18, 24, 33, 1));
+    Point t1(1, 2, 3, 1);
+    assert((m13 * t1) == Point(18, 24, 33, 1));
+
+    // test matrix-vector multiplication
+    Vector v1(1, 2, 3, 0);
+    assert((m13 * v1) == Vector(14, 22, 32, 0));
 
 
     // test (4x4) identity matrix

@@ -10,3 +10,8 @@ bool isEqualEnough(float f1, float f2) {
     epsilon = -epsilon;
   return epsilon < TOLERANCE;
 }
+
+float min(float a, float b) { 
+   return a<=b ? a : b; 
+}
+

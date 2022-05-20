@@ -24,10 +24,10 @@ ray.o: ray.cpp ray.h point.h vector.h matrix.h
 util.o: util.cpp util.h
 	g++ $(CXXFLAGS) -c util.cpp
 
-intersections.o:  intersections.cpp intersections.h ray.h sphere.h
+intersections.o:  intersections.cpp intersections.h ray.h sphere.h util.h
 	g++ $(CXXFLAGS) -c intersections.cpp
 
 .PHONY: clean
 clean:
-	rm *.o raytracer
+	rm -f *.o raytracer
 

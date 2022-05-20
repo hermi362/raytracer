@@ -10,13 +10,6 @@ public:
   float x, y, z, w;
   Tuple(float _x, float _y, float _z, float _w) {x=_x, y=_y, z=_z, w=_w;}
   Tuple(): Tuple(0, 0, 0, 0) {}
-  std::string toString() {
-    const int N = 50;
-    char buffer[N];
-
-    std::snprintf(buffer, N, "(%.3f %.3f %.3f    %.0f)", x,y,z,w);
-    return buffer;
-  }
   Tuple operator-() {return Tuple(0-this->x, 0-this->y, 0-this->z, 0-this->w);} // negation operator
 };
 

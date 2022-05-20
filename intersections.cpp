@@ -1,10 +1,13 @@
 #include "intersections.h"
+#include "util.h"
 
 
-// Return a collection of t values where the ray r intersects the sphere
-std::vector<Isect> intersect(Ray r, Sphere* pSph) {
-  // for details of algorithm, see
-  // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+// Ray-sphere intersection. 
+// returns false if ray misses sphere
+// returns thit, the nearest t-value of the intersection
+// for details of algorithm, see
+// https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+bool intersect(Ray r, Sphere* pSph, float& thit) {
 
   // transform ray by inverse of sphere's transform
   r = r.transform(pSph->mTransform.inverse());
@@ -13,56 +16,19 @@ std::vector<Isect> intersect(Ray r, Sphere* pSph) {
   // (sphere is centered at 0,0,0)
   Vector vSphereToRay = r.getOrigin() - Point(0,0,0);
 
-  auto a = r.getDirection().dot(r.getDirection());
-  auto b = 2 * r.getDirection().dot(vSphereToRay);
-  auto c = vSphereToRay.dot(vSphereToRay) - 1;
-
-  auto discriminant = b*b - 4*a*c;
-
-  std::vector<Isect> ret; // create emtpy return vector
+  float a = r.getDirection().dot(r.getDirection());
+  float b = 2 * r.getDirection().dot(vSphereToRay);
+  float c = vSphereToRay.dot(vSphereToRay) - 1;
+  float discriminant = b*b - 4*a*c;
 
   if (discriminant < 0) // no intersections found
-    return ret;
+    return false;
 
-  auto t1 = (-b - sqrt(discriminant)) / (2*a);
-  auto t2 = (-b + sqrt(discriminant)) / (2*a);
+  float t1 = (-b - sqrt(discriminant)) / (2*a);
+  float t2 = (-b + sqrt(discriminant)) / (2*a);
 
-  Isect i1(t1, pSph); 
-  Isect i2(t2, pSph);
-
-  if (t1 <= t2) {
-    ret.push_back(i1);
-    ret.push_back(i2);
-  } else {
-    ret.push_back(i2);  // reverse the order
-    ret.push_back(i1);
-  }
-  // postcond: elements are in ascending order
-
-  return ret;
+  thit = min(t1, t2);
+  return true;
 }
 
 
-// Takes a collection of intersections and returns the one that is visible
-Isect hit(const std::vector<Isect>& xs) {
-  Isect minHit = NULLISECT;  // keep track of Isect with lowest non-neg t-value
-
-  auto i = xs.begin(); // create an iterator
-  while (i != xs.end()) {
-    if (i->tVal > 0) {
-      if (minHit == NULLISECT) {  // this is the first non-neg intersection found
-        // minHit.tVal = i->tVal;
-        // minHit.obj  = i->obj;
-        minHit = *i;
-      }
-      else if (i->tVal < minHit.tVal) {  // this is a better non-neg intersection
-        // minHit.tVal = i->tVal;
-        // minHit.obj  = i->obj;
-        minHit = *i;
-      }
-    }
-    i++;
-  }
-
-  return minHit;
-}

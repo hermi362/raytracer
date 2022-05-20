@@ -156,6 +156,13 @@ void runTests() {
     assert(a.cross(b) == Vector(-1, 2, -1));
     assert(b.cross(a) == Vector(1, -2, 1));
   }
+  {
+    // scalar multiplication
+    Vector v(1,2,3);
+    assert(1.1 * v == Vector(1.1, 2.2, 3.3));
+    assert(v * 1.1 == Vector(1.1, 2.2, 3.3));
+
+  }
 
   {
     // color tests

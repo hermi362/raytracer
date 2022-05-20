@@ -86,3 +86,11 @@ inline Point operator+(const Vector& v, const Point& p) {
 inline Vector operator+(const Vector& lhs, const Vector& rhs) {
   return Vector(lhs.x+rhs.x, lhs.y+rhs.y, lhs.z+rhs.z);
 }
+
+inline Vector operator*(float a, const Vector& v) {
+    return  v * a; 
+}
+inline Vector operator*(const Vector& v, float a) {
+    return  v * a; 
+}
+

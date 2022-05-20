@@ -19,11 +19,11 @@ struct Vector {
       return Vector(x/mag, y/mag, z/mag, 0.0f);
   }
 
-  float dot(const Vector& v) {
+  float dot(const Vector& v) const {
       return x*v.x + y*v.y + z*v.z + w*v.w;
   }
 
-  Vector cross(const Vector& v) {
+  Vector cross(const Vector& v) const {
       // left-handed cross product
       return Vector(
           y*v.z - z*v.y,

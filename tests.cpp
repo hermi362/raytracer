@@ -618,69 +618,35 @@ void runTests() {
     // ray passing through sphere centre
     Ray r(Point(0,0,-5), Vector(0,0,1));
     Sphere s;
-    auto xs = intersect(r,&s);
-    assert(xs.size() == 2);
-    assert(xs[0].tVal == 4.0);
-    assert(xs[1].tVal == 6.0);
+    float thit;
+    bool hit = intersect(r, &s, thit);
+    assert(hit == true);
+    assert(isEqualEnough(thit, 4.0));
 
     // ray touching sphere at a tangent
     r = Ray(Point(0,1,-5), Vector(0,0,1));
-    xs = intersect(r,&s);
-    assert(xs.size() == 2);
-    assert(xs[0].tVal == 5.0);
-    assert(xs[1].tVal == 5.0);
+    hit = intersect(r, &s, thit);
+    assert(hit == true);
+    assert(isEqualEnough(thit, 5.0));
 
     // ray misses sphere
     r = Ray(Point(0,2,-5), Vector(0,0,1));
-    xs = intersect(r,&s);
-    assert(xs.size() == 0);
+    hit = intersect(r, &s, thit);
+    assert(hit == false);
 
     // ray originates inside sphere
     r = Ray(Point(0,0,0), Vector(0,0,1));
-    xs = intersect(r,&s);
-    assert(xs.size() == 2);
-    assert(xs[0].tVal == -1.0);
-    assert(xs[1].tVal == 1.0);
+    hit = intersect(r, &s, thit);
+    assert(hit == true);
+    assert(isEqualEnough(thit, -1.0));
 
     // sphere is completely behind the ray
     r = Ray(Point(0,0,5), Vector(0,0,1));
-    xs = intersect(r,&s);
-    assert(xs.size() == 2);
-    assert(xs[0].tVal == -6.0);
-    assert(xs[1].tVal == -4.0);
+    hit = intersect(r, &s, thit);
+    assert(hit == true);
+    assert(isEqualEnough(thit, -6.0));
   }
 
-  {
-    // hit function
-
-    // all intersections have positive t
-    Sphere s;
-    Isect i1(1, &s);
-    Isect i2(2, &s);
-    std::vector<Isect> xs {i2, i1};
-    Isect i = hit(xs);
-    assert(i == i1);
-
-    // some intersections have negative t
-    i1.tVal = -1;
-    i2.tVal = 1;
-    i = hit({i2, i1});
-    assert(i == i2);
-
-    // all intersections have negative t
-    i1.tVal = -2;
-    i2.tVal = -1;
-    i = hit({i2, i1});
-    assert(i == NULLISECT);
-
-    // lowest non-negative intersection
-    i1.tVal = 5;
-    i2.tVal = 7;
-    Isect i3(-3, &s);
-    Isect i4(2, &s);
-    i = hit({i1, i2, i3, i4});
-    assert(i == i4);
-  }
 
   {
     // ray transformations
@@ -706,17 +672,44 @@ void runTests() {
     Ray r(Point(0,0,-5), Vector(0,0,1));
     Sphere s;
     s.setTransform(getScaling(2,2,2));
-    std::vector<Isect> xs = intersect(r, &s);
-    assert(xs.size() == 2);
-    assert(xs[0].tVal == 3);
-    assert(xs[1].tVal == 7);
+    float thit;
+    bool hit = intersect(r, &s, thit);
+    assert(isEqualEnough(thit, 3));
 
     // intersecting a translated sphere with a ray
     r = Ray(Point(0,0,-5), Vector(0,0,1));
     s.setTransform(getTranslation(5,0,0));
-    xs = intersect(r, &s);
-    assert(xs.size() == 0);
+    hit = intersect(r, &s, thit);
+    assert(hit == false);
+  }
 
+  {
+    // computing normal on a transformed sphere
+    Sphere s;
+    s.setTransform(getTranslation(0, 1, 0));
+    Vector n = s.getNormalAt(Point(0, 1+ROOT2/2, -ROOT2/2));
+    assert(n == Vector(0, ROOT2/2, -ROOT2/2));    
+  }
+  {
+    // computing normal on a transformed sphere
+    Sphere s;
+    s.setTransform(getScaling(1, 0.5, 1) * getRotationZ(PI/5));
+    Vector n = s.getNormalAt(Point(0, ROOT2/2, -ROOT2/2));
+    assert(n == Vector(0, 0.97014, -0.24254));
+  }
+  {
+    // reflecting a vector approaching at 45 deg
+    Vector v(1, -1, 0);
+    Vector n(0,  1, 0);
+    Vector r = reflect(v, n);
+    assert(r == Vector(1, 1, 0));
+  }
+  {
+    // reflecting a vector off a slanted surface
+    Vector v(0, -1, 0);
+    Vector n(ROOT2/2,  ROOT2/2, 0);
+    Vector r = reflect(v, n);
+    assert(r == Vector(1, 0, 0));
   }
     
   std::cout << "Tests completed.\n";
@@ -805,7 +798,7 @@ void rayTraceSphere() {
   // sphere.setTransform(getTranslation(0.5,0,0));
   // sphere.setTransform(getScaling(1, 0.5, 1));
   // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.5, 1) * getTranslation(0.5, 0, 0) );
-  // sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+  sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
 
   for (int y=0 ; y<film_pixels ; y++) {
     float world_y = half - pixel_size * y;
@@ -818,10 +811,11 @@ void rayTraceSphere() {
 
       Vector ray_direction = Vector(position - ray_origin).normalize();
       Ray r(ray_origin, ray_direction);
-      auto xs = intersect(r, &sphere);
+      float thit;
+      bool hit;
+      hit = intersect(r, &sphere, thit);
 
-      Isect raytrace_result = hit(xs);
-      if (raytrace_result.isHit()) {
+      if (hit) {
         film.writePixel(x, y, red);
       }
 

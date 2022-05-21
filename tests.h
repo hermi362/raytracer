@@ -1,3 +1,5 @@
+#pragma once
+
 void runTests();
 
 void playProjectileGame();

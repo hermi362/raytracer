@@ -4,6 +4,9 @@
 #include "point.h"
 #include "matrix.h"
 
+#include "material.h"
+#include "light.h"
+
 // Implements a ray that will be cast around the scene
 class Ray
 {
@@ -32,3 +35,7 @@ class Ray
 
 // compute reflection of incoming vector on surface defined by a normal
 Vector reflect(const Vector& in, const Vector& normal);
+
+// perform lighting model calculation
+// TODO: consider moving this into a separate module, it's not exactly part of a ray, is it?
+Color lighting(Material material, PointLight light, Point position, Vector eyev, Vector normal);

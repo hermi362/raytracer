@@ -13,6 +13,7 @@
 #include "sphere.h"
 #include "util.h"
 #include "intersections.h"
+#include "light.h"
 
 void runTests() {
   {
@@ -711,6 +712,56 @@ void runTests() {
     Vector r = reflect(v, n);
     assert(r == Vector(1, 0, 0));
   }
+  {
+    // lighting
+    Material material;
+    material.shininess = 200;
+    PointLight light(Point(0,0,-10), Color(1,1,1));
+    Point point(0,0,0);
+
+    Vector eyev(0,0,-1);
+    Vector normalv(0,0,-1);
+
+    Color result;
+
+    // lighting with the eye between the light and the surface
+    eyev = Vector(0,0,-1);
+    normalv = Vector(0,0,-1);
+    light.position = Point(0,0,-10);
+    result = lighting(material, light, point, eyev, normalv);
+    assert(result == Color(1.9,1.9,1.9));
+
+    // lighting with eye offset 45 deg
+    eyev = Vector(0, ROOT2/2, -ROOT2/2);
+    normalv = Vector(0,0,-1);
+    light.position = Point(0,0,-10);
+    result = lighting(material, light, point, eyev, normalv);
+    assert(result == Color(1.0,1.0,1.0));
+
+    // lighting with light offset 45 deg
+    eyev = Vector(0,0,-1);
+    normalv = Vector(0,0,-1);
+    light.position = Point(0,10,-10);
+    result = lighting(material, light, point, eyev, normalv);
+    float L = 0.1 + 0.9*ROOT2/2;
+    assert(result == Color(L, L, L));
+
+    // lighting with eye in the path of reflection vector    
+    eyev = Vector(0, -ROOT2/2, -ROOT2/2);
+    normalv = Vector(0,0,-1);
+    light.position = Point(0,10,-10);
+    result = lighting(material, light, point, eyev, normalv);
+    L = 1.6363853; //0.1 + 0.9*ROOT2/2 + 0.9;
+    assert(result == Color(L, L, L));
+
+    // lighting with the light behind the surface
+    eyev = Vector(0,0,-1);
+    normalv = Vector(0,0,-1);
+    light.position = Point(0,0,10);
+    result = lighting(material, light, point, eyev, normalv);
+    L = 0.1f;
+    assert(result == Color(L, L, L));
+  }
     
   std::cout << "Tests completed.\n";
 }
@@ -794,11 +845,14 @@ void rayTraceSphere() {
   float pixel_size = wall_size / film_pixels;
   float half = wall_size / 2;
 
+  PointLight light(Point(-10,0,0), Color(0.8, 0.4, 0.0));
+
   Sphere sphere;
   // sphere.setTransform(getTranslation(0.5,0,0));
   // sphere.setTransform(getScaling(1, 0.5, 1));
-  // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.5, 1) * getTranslation(0.5, 0, 0) );
-  sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+  // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.2, 1) * getTranslation(0.8, 0, 0) );
+  // sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+  sphere.setTransform(getRotationX(PI/8) * getScaling(1.5, 0.2, 1) );
 
   for (int y=0 ; y<film_pixels ; y++) {
     float world_y = half - pixel_size * y;
@@ -816,12 +870,17 @@ void rayTraceSphere() {
       hit = intersect(r, &sphere, thit);
 
       if (hit) {
-        film.writePixel(x, y, red);
+        Point wrldIntersect = sphere.transform * r.getPosition(thit);
+        Vector eyev = (ray_origin - wrldIntersect).normalize();
+        Vector normal = sphere.getNormalAt(wrldIntersect);
+        Color shade = lighting(sphere.material, light, wrldIntersect, eyev, normal);
+        film.writePixel(x, y, shade);
       }
 
-    }
+    } // x++
 
-  }
+  if (y%10==0) std::cout << "line " << y << std::endl;
+  } // y++
 
   std::ofstream ostrm("sphere.ppm");
   ostrm << film.toPPM();

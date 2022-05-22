@@ -9,7 +9,7 @@ raytracer:         main.o tests.o film.o matrix.o util.o ray.o intersections.o
 main.o: main.cpp tests.h 
 	g++ $(CXXFLAGS) -c main.cpp
 
-tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h
+tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h material.h light.h
 	g++ $(CXXFLAGS) -c tests.cpp
 
 film.o: film.cpp film.h color.h
@@ -18,7 +18,7 @@ film.o: film.cpp film.h color.h
 matrix.o: matrix.cpp matrix.h point.h vector.h util.h
 	g++ $(CXXFLAGS) -c matrix.cpp
 
-ray.o: ray.cpp ray.h point.h vector.h matrix.h
+ray.o: ray.cpp ray.h point.h vector.h matrix.h light.h material.h
 	g++ $(CXXFLAGS) -c ray.cpp
 
 util.o: util.cpp util.h

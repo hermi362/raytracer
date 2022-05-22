@@ -2,23 +2,25 @@
 
 #include "matrix.h"
 #include "vector.h"
+#include "material.h"
 
 struct Sphere
 {
     // transformation to place/deform the sphere in scene (object2world) 
-    Matrix mTransform = id4Matrix; 
+    Matrix transform = id4Matrix; 
+    Material material;
 
     Sphere() {}  // origin at (0,0,0) with unit radius
 
     void setTransform(Matrix m) {
-        mTransform = m;
+        transform = m;
     }
 
     // get the world surface normal vector at some world point p on the surface
     Vector getNormalAt(Point worldp) {
-        Point objectp = mTransform.inverse() * worldp;
+        Point objectp = transform.inverse() * worldp;
         Vector objectn = (objectp - Point(0,0,0));
-        Vector worldn = mTransform.inverse().transpose() * objectn;        
+        Vector worldn = transform.inverse().transpose() * objectn;        
         return worldn.normalize();
     }
 };

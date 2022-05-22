@@ -10,7 +10,7 @@
 bool intersect(Ray r, Sphere* pSph, float& thit) {
 
   // transform ray by inverse of sphere's transform
-  r = r.transform(pSph->mTransform.inverse());
+  r = r.transform(pSph->transform.inverse());
 
   // get vector from sphere centre to ray origin
   // (sphere is centered at 0,0,0)

@@ -34,7 +34,7 @@ void runTests() {
     assert(t1 != t2);    
   }
   {
-    // adding pointers and vectors
+    // adding points and vectors
     Point p1 = Point(1.0, 1.2, 4.2);
     Vector v1 = Vector(10,10,10);
     Point p2 = p1 + v1;

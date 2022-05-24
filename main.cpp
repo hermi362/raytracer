@@ -25,7 +25,7 @@ int main() {
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
 
-  int film_pixels = 200;
+  int film_pixels = 800;
   Film film(film_pixels, film_pixels);
 
   Point ray_origin(0,0,-10.f);
@@ -57,12 +57,12 @@ void rayTraceSphere() {
 
       Vector ray_direction = Vector(position - ray_origin).normalize();
       Ray r(ray_origin, ray_direction);
-      float thit;
+      float tHit;
       bool hit;
-      hit = intersect(r, &sphere, thit);
+      hit = intersect(r, &sphere, tHit);
 
       if (hit) {
-        Point wrldIntersect = sphere.transform * r.getPosition(thit);
+        Point wrldIntersect = sphere.objectToWorld * r.getPosition(tHit);
         Vector eyev = (ray_origin - wrldIntersect).normalize();
         Vector normal = sphere.getNormalAt(wrldIntersect);
         Color shade = lighting(sphere.material, light, wrldIntersect, eyev, normal);
@@ -71,7 +71,7 @@ void rayTraceSphere() {
 
     } // x++
 
-  if (y%50==0) std::cout << "line " << y << std::endl;
+  //if (y%50==0) std::cout << "line " << y << std::endl;
   } // y++
 
   std::ofstream ostrm("sphere.ppm");

@@ -9,8 +9,8 @@
 // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 bool intersect(Ray r, Sphere* pSph, float& thit) {
 
-  // transform ray by inverse of sphere's transform
-  r = r.transform(pSph->transform.inverse());
+  // transform ray to object coordinate system
+  r = r.transform(pSph->worldToObject);
 
   // get vector from sphere centre to ray origin
   // (sphere is centered at 0,0,0)

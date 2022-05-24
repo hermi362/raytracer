@@ -1,16 +1,10 @@
-#include "intersections.h"
-#include "util.h"
+#include "sphere.h"
+#include "ray.h"
 
-
-// Ray-sphere intersection. 
-// returns false if ray misses sphere
-// returns thit, the nearest t-value of the intersection
-// for details of algorithm, see
-// https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
-bool intersect(Ray r, Sphere* pSph, float& thit) {
+bool Sphere::intersect(const Ray& worldRay, float& thit) {
 
   // transform ray to object coordinate system
-  r = r.transform(pSph->worldToObject);
+  Ray r = worldRay.transform(worldToObject);
 
   // get vector from sphere centre to ray origin
   // (sphere is centered at 0,0,0)
@@ -34,6 +28,5 @@ bool intersect(Ray r, Sphere* pSph, float& thit) {
 
   thit = min(t1, t2);
   return true;
+
 }
-
-

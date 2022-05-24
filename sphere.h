@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "vector.h"
 #include "material.h"
+#include "ray.h"
 
 struct Sphere
 {
@@ -25,4 +26,12 @@ struct Sphere
         Vector worldn = worldToObject.transpose() * objectn;        
         return worldn.normalize();
     }
+
+    // Ray-sphere intersection. 
+    // returns false if ray misses sphere
+    // returns thit, the nearest t-value of the intersection
+    // for details of algorithm, see
+    // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+    bool intersect(const Ray& worldRay, float& thit);
+
 };

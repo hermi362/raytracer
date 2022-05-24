@@ -2,18 +2,18 @@
 # based on the book "The Ray Tracer Challenge" by Jamis Buck
 
 # debug build
-CXXFLAGS = -std=c++14 -O3 -ggdb3 -Wall
+CXXFLAGS = -std=c++14 -ggdb3 -Wall
 
 #release build
 #CXXFLAGS = -std=c++14 -O3 -Wall
 
-raytracer:         main.o tests.o film.o matrix.o util.o ray.o intersections.o
-	g++ -o raytracer main.o tests.o film.o matrix.o util.o ray.o intersections.o
+raytracer:         main.o tests.o film.o matrix.o util.o ray.o sphere.o
+	g++ -o raytracer main.o tests.o film.o matrix.o util.o ray.o sphere.o
 
-main.o: main.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h material.h light.h
+main.o: main.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h
 	g++ $(CXXFLAGS) -c main.cpp
 
-tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h material.h light.h
+tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h
 	g++ $(CXXFLAGS) -c tests.cpp
 
 film.o: film.cpp film.h color.h
@@ -28,8 +28,8 @@ ray.o: ray.cpp ray.h point.h vector.h matrix.h light.h material.h
 util.o: util.cpp util.h
 	g++ $(CXXFLAGS) -c util.cpp
 
-intersections.o:  intersections.cpp intersections.h ray.h sphere.h util.h
-	g++ $(CXXFLAGS) -c intersections.cpp
+sphere.o: sphere.cpp sphere.h ray.h
+	g++ $(CXXFLAGS) -c sphere.cpp
 
 .PHONY: clean
 clean:

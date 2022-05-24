@@ -6,7 +6,6 @@
 #include "light.h"
 #include "sphere.h"
 #include "ray.h"
-#include "intersections.h"
 
 
 
@@ -59,7 +58,7 @@ void rayTraceSphere() {
       Ray r(ray_origin, ray_direction);
       float tHit;
       bool hit;
-      hit = intersect(r, &sphere, tHit);
+      hit = sphere.intersect(r, tHit);
 
       if (hit) {
         Point wrldIntersect = sphere.objectToWorld * r.getPosition(tHit);

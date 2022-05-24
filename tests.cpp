@@ -12,7 +12,6 @@
 #include "ray.h"
 #include "sphere.h"
 #include "util.h"
-#include "intersections.h"
 #include "light.h"
 
 void runTests() {
@@ -620,30 +619,30 @@ void runTests() {
     Ray r(Point(0,0,-5), Vector(0,0,1));
     Sphere s;
     float thit;
-    bool hit = intersect(r, &s, thit);
+    bool hit = s.intersect(r, thit);
     assert(hit == true);
     assert(isEqualEnough(thit, 4.0));
 
     // ray touching sphere at a tangent
     r = Ray(Point(0,1,-5), Vector(0,0,1));
-    hit = intersect(r, &s, thit);
+    hit = s.intersect(r, thit);
     assert(hit == true);
     assert(isEqualEnough(thit, 5.0));
 
     // ray misses sphere
     r = Ray(Point(0,2,-5), Vector(0,0,1));
-    hit = intersect(r, &s, thit);
+    hit = s.intersect(r, thit);
     assert(hit == false);
 
     // ray originates inside sphere
     r = Ray(Point(0,0,0), Vector(0,0,1));
-    hit = intersect(r, &s, thit);
+    hit = s.intersect(r, thit);
     assert(hit == true);
     assert(isEqualEnough(thit, -1.0));
 
     // sphere is completely behind the ray
     r = Ray(Point(0,0,5), Vector(0,0,1));
-    hit = intersect(r, &s, thit);
+    hit = s.intersect(r, thit);
     assert(hit == true);
     assert(isEqualEnough(thit, -6.0));
   }
@@ -674,13 +673,13 @@ void runTests() {
     Sphere s;
     s.setTransform(getScaling(2,2,2));
     float thit;
-    bool hit = intersect(r, &s, thit);
+    bool hit = s.intersect(r, thit);
     assert(isEqualEnough(thit, 3));
 
     // intersecting a translated sphere with a ray
     r = Ray(Point(0,0,-5), Vector(0,0,1));
     s.setTransform(getTranslation(5,0,0));
-    hit = intersect(r, &s, thit);
+    hit = s.intersect(r, thit);
     assert(hit == false);
   }
 

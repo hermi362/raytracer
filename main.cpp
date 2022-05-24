@@ -11,6 +11,11 @@
 
 int main() {
 
+  Sphere sph;
+  Shape& rSh = sph;
+  rSh.setTransform(id4Matrix);
+
+
   runTests();
   // playProjectileGame();
   // drawClock();
@@ -24,7 +29,7 @@ int main() {
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
 
-  int film_pixels = 800;
+  int film_pixels = 200;
   Film film(film_pixels, film_pixels);
 
   Point ray_origin(0,0,-10.f);
@@ -35,15 +40,16 @@ void rayTraceSphere() {
 
   PointLight light(Point(5,10,-10), Color(0.8, 0.4, 0.0));
 
-  Sphere sphere;
-  // sphere.material.ambient = 0.1f;
-  // sphere.material.diffuse = 0.9;
-  // sphere.material.specular = 0.3;
-  // sphere.setTransform(getTranslation(0.5,0,0));
-  // sphere.setTransform(getScaling(1, 0.5, 1));
-  // sphere.setTransform(getRotationZ(PI/4) * getScaling(1, 0.2, 1) * getTranslation(0.8, 0, 0) );
-  // sphere.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
-  // sphere.setTransform(getRotationX(PI/8) * getScaling(1.5, 0.2, 1) );
+  Sphere aRealSphere;
+  Shape& myShape = aRealSphere;
+  myShape.material.ambient = 0.1f;
+  myShape.material.diffuse = 0.9;
+  myShape.material.specular = 0.3;
+  // myShape.setTransform(getTranslation(0.5,0,0));
+  myShape.setTransform(getScaling(1.4, 0.5, 1.3));
+  // myShape.setTransform(getRotationZ(PI/4) * getScaling(1, 0.2, 1) * getTranslation(0.8, 0, 0) );
+  // myShape.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
+  // myShape.setTransform(getRotationX(PI/8) * getScaling(1.5, 0.2, 1) );
 
   for (int y=0 ; y<film_pixels ; y++) {
     float world_y = half - pixel_size * y;
@@ -58,13 +64,13 @@ void rayTraceSphere() {
       Ray r(ray_origin, ray_direction);
       float tHit;
       bool hit;
-      hit = sphere.intersect(r, tHit);
+      hit = myShape.intersect(r, tHit);
 
       if (hit) {
-        Point wrldIntersect = sphere.objectToWorld * r.getPosition(tHit);
+        Point wrldIntersect = myShape.objectToWorld * r.getPosition(tHit);
         Vector eyev = (ray_origin - wrldIntersect).normalize();
-        Vector normal = sphere.getNormalAt(wrldIntersect);
-        Color shade = lighting(sphere.material, light, wrldIntersect, eyev, normal);
+        Vector normal = myShape.getNormalAt(wrldIntersect);
+        Color shade = lighting(myShape.material, light, wrldIntersect, eyev, normal);
         film.writePixel(x, y, shade);
       }
 

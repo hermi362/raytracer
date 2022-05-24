@@ -7,7 +7,7 @@
 struct Scene
 {
   PointLight light;
-  std::vector<Sphere> vObjects;  // TODO: general objects, not spheres.
+  std::vector<Shape&> vShapes;
 
   Scene();
 
@@ -15,13 +15,14 @@ struct Scene
     // build a default scene
     light = PointLight(Point(-10, 10, -10), Color(1,1,1));
 
-    Sphere sph;
-    sph.material.color = Color(0.8, 1.0, 0.6);
-    sph.material.diffuse = 0.7;
-    sph.material.specular = 0.2;
-    vObjects.push_back(sph);
+    static Sphere sph1;
+    sph1.material.color = Color(0.8, 1.0, 0.6);
+    sph1.material.diffuse = 0.7;
+    sph1.material.specular = 0.2;
+    vShapes.push_back(sph1);
 
-    sph.setTransform(getScaling(0.5, 0.5, 0.5)) ;
-    vObjects.push_back(sph);
+    static Sphere sph2;
+    sph2.setTransform(getScaling(0.5, 0.5, 0.5)) ;
+    vShapes.push_back(sph2);
   }
 };

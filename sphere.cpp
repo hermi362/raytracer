@@ -1,7 +1,14 @@
 #include "sphere.h"
 #include "ray.h"
 
-bool Sphere::intersect(const Ray& worldRay, float& tHit) {
+Vector Sphere::getNormalAt(const Point& worldp) const {
+    Point objectp = worldToObject * worldp;
+    Vector objectn = (objectp - Point(0,0,0));
+    Vector worldn = worldToObject.transpose() * objectn;        
+    return worldn.normalize();
+}
+
+bool Sphere::intersect(const Ray& worldRay, float& tHit) const {
 
   // transform ray to object coordinate system
   Ray r = worldRay.transform(worldToObject);

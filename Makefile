@@ -28,7 +28,7 @@ ray.o: ray.cpp ray.h point.h vector.h matrix.h light.h material.h
 util.o: util.cpp util.h
 	g++ $(CXXFLAGS) -c util.cpp
 
-sphere.o: sphere.cpp sphere.h ray.h
+sphere.o: sphere.cpp sphere.h ray.h shape.h
 	g++ $(CXXFLAGS) -c sphere.cpp
 
 .PHONY: clean

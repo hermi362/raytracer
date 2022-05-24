@@ -1,12 +1,16 @@
 # simple raytracer
 # based on the book "The Ray Tracer Challenge" by Jamis Buck
 
-CXXFLAGS = -std=c++14 -ggdb3 -Wall
+# debug build
+CXXFLAGS = -std=c++14 -O3 -ggdb3 -Wall
+
+#release build
+#CXXFLAGS = -std=c++14 -O3 -Wall
 
 raytracer:         main.o tests.o film.o matrix.o util.o ray.o intersections.o
 	g++ -o raytracer main.o tests.o film.o matrix.o util.o ray.o intersections.o
 
-main.o: main.cpp tests.h 
+main.o: main.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h material.h light.h
 	g++ $(CXXFLAGS) -c main.cpp
 
 tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h intersections.h material.h light.h

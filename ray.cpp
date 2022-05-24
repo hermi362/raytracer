@@ -1,12 +1,12 @@
 #include "ray.h"
 
 // Compute the position of this ray at the distance t along the ray
-Point Ray::getPosition(float t) {
+Point Ray::getPosition(float t) const {
   return origin + (t * direction);
 }
 
 // return a new ray after applying transformation
-Ray Ray::transform(const Matrix& m) {
+Ray Ray::transform(const Matrix& m) const {
   Ray ret;
 
   ret.origin = m * origin;

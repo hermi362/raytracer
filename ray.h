@@ -25,12 +25,12 @@ class Ray
 
     // TODO: once raytracer is up and running, consider returning origin and direction
     // by reference (as a potentially significant optimization).
-    Point getOrigin()  {return origin;}
-    Vector getDirection() {return direction;}
+    Point getOrigin() const  {return origin;}
+    Vector getDirection() const {return direction;}
 
-    Point getPosition(float t);
+    Point getPosition(float t) const;
 
-    Ray transform(const Matrix& m);
+    Ray transform(const Matrix& m) const;
 };
 
 // compute reflection of incoming vector on surface defined by a normal

@@ -10,5 +10,5 @@ struct PointLight
   Color intensity;
 
   PointLight(Point p, Color i): position(p), intensity(i) {}
-  PointLight() : PointLight(Point(0,0,0), Color(1,1,1));
+  PointLight() : PointLight(Point(0,0,0), Color(1,1,1)) {}
 };

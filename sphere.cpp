@@ -1,7 +1,7 @@
 #include "sphere.h"
 #include "ray.h"
 
-bool Sphere::intersect(const Ray& worldRay, float& thit) {
+bool Sphere::intersect(const Ray& worldRay, float& tHit) {
 
   // transform ray to object coordinate system
   Ray r = worldRay.transform(worldToObject);
@@ -26,7 +26,7 @@ bool Sphere::intersect(const Ray& worldRay, float& thit) {
   float t1 = -0.5 * (b/a + root_disc_over_a);
   float t2 = t1 + root_disc_over_a;
 
-  thit = min(t1, t2);
+  tHit = min(t1, t2);
   return true;
 
 }

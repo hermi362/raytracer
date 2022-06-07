@@ -6,15 +6,11 @@
 #include "light.h"
 #include "sphere.h"
 #include "ray.h"
+#include "scene.h"
 
 
 
 int main() {
-
-  Sphere sph;
-  Shape& rSh = sph;
-  rSh.setTransform(id4Matrix);
-
 
   runTests();
   // playProjectileGame();

@@ -9,6 +9,7 @@ class Sphere : public Shape
 {
 public:
   Sphere() : Shape() {}  // origin at (0,0,0) with unit radius
+  Sphere(Sphere& s) : Shape(s) {} // copy constructor
 
   // get the world surface normal vector at some world point p on the surface
   Vector getNormalAt(const Point& worldp) const;

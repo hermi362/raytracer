@@ -15,6 +15,10 @@ public:
   Material material;
 
   Shape() : objectToWorld(id4Matrix), worldToObject(id4Matrix) {}
+  Shape(Shape &sh) : 
+    objectToWorld(sh.objectToWorld), 
+    worldToObject(sh.worldToObject),
+    material(sh.material) {}
 
   void setTransform(Matrix m) {
       objectToWorld = m;

@@ -15,7 +15,7 @@ int main() {
   runTests();
   // playProjectileGame();
   // drawClock();
-  rayTraceSphere();
+  // rayTraceSphere();
 
   return 0;
 }

@@ -18,4 +18,6 @@ public:
   Scene() {}
 
   void createDefaultScene();
+
+  bool intersectScene(const Ray& r, float& tHit);
 };

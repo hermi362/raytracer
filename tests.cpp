@@ -13,6 +13,7 @@
 #include "sphere.h"
 #include "util.h"
 #include "light.h"
+#include "scene.h"
 
 void runTests() {
   {
@@ -760,6 +761,18 @@ void runTests() {
     result = lighting(material, light, point, eyev, normalv);
     L = 0.1f;
     assert(result == Color(L, L, L));
+  }
+
+  {
+    // intersections
+    Scene scene;
+    scene.createDefaultScene();
+    Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
+    bool bHit;
+    float tHit;
+    bHit = scene.intersectScene(ray, tHit);
+    assert(bHit == true);
+    assert(isEqualEnough(tHit, 4.f));
   }
     
   std::cout << "Tests completed.\n";

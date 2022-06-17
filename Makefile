@@ -10,10 +10,10 @@ CXXFLAGS = -std=c++14 -ggdb3 -Wall
 raytracer:         main.o tests.o film.o matrix.o util.o ray.o sphere.o scene.o
 	g++ -o raytracer main.o tests.o film.o matrix.o util.o ray.o sphere.o scene.o
 
-main.o: main.cpp   tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h scene.h
+main.o: main.cpp   tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h scene.h intersection_computation.h
 	g++ $(CXXFLAGS) -c main.cpp
 
-tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h scene.h
+tests.o: tests.cpp tests.h point.h vector.h color.h film.h matrix.h util.h ray.h sphere.h material.h light.h scene.h intersection_computation.h
 	g++ $(CXXFLAGS) -c tests.cpp
 
 film.o: film.cpp film.h color.h

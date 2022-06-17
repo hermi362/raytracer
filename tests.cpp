@@ -14,6 +14,7 @@
 #include "util.h"
 #include "light.h"
 #include "scene.h"
+#include "intersection_computation.h"
 
 void runTests() {
   {
@@ -772,6 +773,38 @@ void runTests() {
     bHit = scene.intersectScene(ray, tHit);
     assert(bHit == true);
     assert(isEqualEnough(tHit, 4.f));
+  }
+
+  {
+    // intersection computation -- intersection occurs outside sphere
+    Ray r(Point(0, 0, -5), Vector(0, 0, 1));
+    Sphere shape;
+    bool bHit;
+    float tHit;
+    bHit = shape.intersect(r, tHit);
+    assert(bHit == true);
+    IntersectionComputation iComp(r, tHit, &shape);
+    assert(isEqualEnough(iComp.time, tHit));
+    assert(iComp.pShape == &shape);
+    assert(iComp.point == Point(0,0,-1));
+    assert(iComp.eyev == Vector(0,0,-1));
+    assert(iComp.normalv == Vector(0,0,-1));
+    assert(iComp.inside == false);
+  }
+
+  {
+    // intersection computation -- intersection occurs inside sphere
+    Ray r(Point(0, 0, 0), Vector(0, 0, 1));
+    Sphere shape;
+    bool bHit;
+    float tHit;
+    bHit = shape.intersect(r, tHit);
+    assert(bHit == true);
+    IntersectionComputation iComp(r, tHit, &shape);
+    assert(iComp.point == Point(0,0,1));
+    assert(iComp.eyev == Vector(0,0,-1));
+    assert(iComp.normalv == Vector(0,0,-1));  // normal has been inverted
+    assert(iComp.inside == true);
   }
     
   std::cout << "Tests completed.\n";

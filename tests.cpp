@@ -639,13 +639,12 @@ void runTests() {
     r = Ray(Point(0,0,0), Vector(0,0,1));
     hit = s.intersect(r, thit);
     assert(hit == true);
-    assert(isEqualEnough(thit, -1.0));
+    assert(isEqualEnough(thit, 1.0));
 
     // sphere is completely behind the ray
     r = Ray(Point(0,0,5), Vector(0,0,1));
     hit = s.intersect(r, thit);
-    assert(hit == true);
-    assert(isEqualEnough(thit, -6.0));
+    assert(hit == false);
   }
 
 

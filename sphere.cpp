@@ -33,7 +33,17 @@ bool Sphere::intersect(const Ray& worldRay, float& tHit) const {
   float t1 = -0.5 * (b/a + root_disc_over_a);
   float t2 = t1 + root_disc_over_a;
 
-  tHit = min(t1, t2);
+  // ignore negative values
+  if (t1<0 && t2<0)
+    return false;
+
+  if (t1<0 && t2>=0)
+    tHit = t2;
+  else if (t1>=0 && t2<0)
+    tHit = t1;
+  else
+    tHit = min(t1, t2);
+
   return true;
 
 }

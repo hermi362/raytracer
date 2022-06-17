@@ -15,7 +15,7 @@ int main() {
   runTests();
   // playProjectileGame();
   // drawClock();
-  // rayTraceSphere();
+  rayTraceSphere();
 
   return 0;
 }
@@ -25,7 +25,7 @@ int main() {
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
 
-  int film_pixels = 200;
+  int film_pixels = 400;
   Film film(film_pixels, film_pixels);
 
   Point ray_origin(0,0,-10.f);
@@ -42,7 +42,7 @@ void rayTraceSphere() {
   myShape.material.diffuse = 0.9;
   myShape.material.specular = 0.3;
   // myShape.setTransform(getTranslation(0.5,0,0));
-  myShape.setTransform(getScaling(1.4, 0.5, 1.3));
+  // myShape.setTransform(getScaling(1.4, 0.5, 1.3));
   // myShape.setTransform(getRotationZ(PI/4) * getScaling(1, 0.2, 1) * getTranslation(0.8, 0, 0) );
   // myShape.setTransform(getShear(1,0,0,0,0,0) * getScaling( .5, 1, 1) );
   // myShape.setTransform(getRotationX(PI/8) * getScaling(1.5, 0.2, 1) );

@@ -9,3 +9,6 @@ raytracer
 
 # rendered images
 *.ppm
+
+# VSCode
+.vscode

@@ -20,8 +20,7 @@ int main() {
   return 0;
 }
 
-// ray-trace a sphere against a square film using hit/nonhit only.
-// This should draw a solid circle on film.
+// ray-trace a sphere against a square film using phong model.
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
 

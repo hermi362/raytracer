@@ -8,18 +8,6 @@
 #include "ray.h"
 #include "scene.h"
 
-
-
-int main() {
-
-  runTests();
-  // playProjectileGame();
-  // drawClock();
-  rayTraceSphere();
-
-  return 0;
-}
-
 // ray-trace a sphere against a square film using phong model.
 void rayTraceSphere() {
   std::cout << "Rendering sphere..." << std::endl;
@@ -79,3 +67,14 @@ void rayTraceSphere() {
   std::cout << "Finished." << std::endl;
 
 }
+
+int main() {
+
+  runTests();
+  // playProjectileGame();
+  // drawClock();
+  rayTraceSphere();
+
+  return 0;
+}
+

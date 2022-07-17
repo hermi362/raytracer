@@ -11,6 +11,7 @@
 #include "matrix.h"
 #include "ray.h"
 #include "sphere.h"
+#include "triangle.h"
 #include "util.h"
 #include "light.h"
 #include "scene.h"
@@ -805,6 +806,21 @@ void runTests() {
     assert(iComp.eyev == Vector(0,0,-1));
     assert(iComp.normalv == Vector(0,0,-1));  // normal has been inverted
     assert(iComp.inside == true);
+  }
+    
+  {
+    // intersection computation -- intersection with triangle
+    Ray r(Point(0, 0, -5), Vector(0, 0, 1));
+    Triangle tri(Point(-1,-1,0.5), Point(1,-1,0.5), Point(0,1,0.5));
+    bool bHit;
+    float tHit;
+    bHit = tri.intersect(r, tHit);
+    assert(bHit == true);
+    IntersectionComputation iComp(r, tHit, &tri);
+    assert(iComp.point == Point(0,0,0.5));
+    assert(iComp.eyev == Vector(0,0,-1));
+    assert(iComp.normalv == Vector(0,0,-1));  // normal has been inverted
+    //assert(iComp.inside == true);
   }
     
   std::cout << "Tests completed.\n";

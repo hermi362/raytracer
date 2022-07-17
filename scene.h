@@ -19,5 +19,6 @@ public:
 
   void createDefaultScene();
 
+  // perform ray intersection with every object, return tHit for nearest intersection
   bool intersectScene(const Ray& r, float& tHit);
 };
